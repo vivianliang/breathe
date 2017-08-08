@@ -1,8 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 
-const circle = require('./circle.png');
-const circle2 = require('./circle2.png');
+import circle from './circle.png';
+import circle2 from './circle2.png';
 
 const styles = StyleSheet.create({
   container: {

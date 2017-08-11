@@ -1,3 +1,7 @@
+# project breathe
+
+[![CircleCI](https://circleci.com/gh/vivianliang/breathe.svg?style=svg&circle-token=723bc3640039f3e5ec67513a3ec05fd893ffe506)](https://circleci.com/gh/vivianliang/breathe)
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).

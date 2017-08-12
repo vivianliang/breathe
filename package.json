@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "eslint": "^4.4.0",
-    "eslint-config-airbnb": "^15.1.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.1.0",
-    "jest-expo": "~18.0.0",
-    "react-native-scripts": "0.0.40",
+    "enzyme": "2.9.x",
+    "eslint": "4.4.x",
+    "eslint-config-airbnb": "15.1.x",
+    "eslint-plugin-import": "2.7.x",
+    "eslint-plugin-jsx-a11y": "5.1.x",
+    "eslint-plugin-react": "7.1.x",
+    "jest-expo": "18.0.x",
+    "react-native-mock": "0.3.x",
+    "react-native-scripts": "1.1.0",
     "react-test-renderer": "16.0.0-alpha.12"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
@@ -21,11 +23,12 @@
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupTestFrameworkScriptFile": "./__mocks__/react-native-mock.js"
   },
   "dependencies": {
-    "expo": "^18.0.3",
+    "expo": "19.0.1",
     "react": "16.0.0-alpha.12",
-    "react-native": "^0.45.1"
+    "react-native": "0.46.1"
   }
 }

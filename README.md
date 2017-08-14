@@ -1,5 +1,7 @@
 # Project Breathe
 
+[![CircleCI](https://circleci.com/gh/vivianliang/breathe.svg?style=svg&circle-token=723bc3640039f3e5ec67513a3ec05fd893ffe506)](https://circleci.com/gh/vivianliang/breathe)
+
 ## Style Guide
 We follow the [Airbnb style guide](https://github.com/airbnb/javascript/tree/master/react) to keep things simple.
 

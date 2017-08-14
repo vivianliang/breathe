@@ -1,6 +1,14 @@
 {
   extends: "airbnb",
   rules: {
-    react/jsx-filename-extension: ["error", { "extensions": [".js", ".jsx"] }]
-  }
+    react/jsx-filename-extension: ["error", { "extensions": [".js", ".jsx"] }],
+    import/no-extraneous-dependencies: [2, { devDependencies: true }],
+  },
+  // this needs to be moved to jest environment
+  globals: {
+    describe: false,
+    expect: false,
+    jest: false,
+    it: false,
+  },
 }

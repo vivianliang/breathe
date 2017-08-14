@@ -5,4 +5,4 @@ machine:
 test:
     override:
         # javascript
-        - npm test --coverage
+        - node node_modules/jest/bin/jest.js --coverage

@@ -6,7 +6,9 @@
   },
   // this needs to be moved to jest environment
   globals: {
+    describe: false,
     expect: false,
+    jest: false,
     it: false,
   },
 }

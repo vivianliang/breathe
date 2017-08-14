@@ -9,10 +9,10 @@
     "eslint-plugin-import": "2.7.x",
     "eslint-plugin-jsx-a11y": "5.1.x",
     "eslint-plugin-react": "7.1.x",
-    "jest-expo": "18.0.x",
+    "jest-expo": "19.0.x",
     "react-native-mock": "0.3.x",
     "react-native-scripts": "1.1.0",
-    "react-test-renderer": "16.0.0-alpha.12"
+    "react-test-renderer": "16.0.0-alpha.6"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
@@ -27,8 +27,8 @@
     "setupTestFrameworkScriptFile": "./__mocks__/react-native-mock.js"
   },
   "dependencies": {
-    "expo": "19.0.1",
-    "react": "16.0.0-alpha.12",
-    "react-native": "0.46.1"
+    "expo": "17.0.x",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.44.x"
   }
 }

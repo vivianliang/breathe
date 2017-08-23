@@ -1,10 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import {
   Animated,
+  Button,
   Easing,
   Image,
   StyleSheet,
-  TouchableHighlight } from 'react-native';
+  TouchableHighlight,
+  View } from 'react-native';
 
 import startImage from '../../assets/images/circlePlay.png';
 import breathingImage from '../../assets/images/circleBreathing.png';
@@ -21,6 +24,9 @@ const styles = StyleSheet.create({
 });
 
 export default class Breathe extends React.Component {
+  static propTypes = {
+    navigation: PropTypes.object.isRequired,
+  }
   constructor(props) {
     super(props);
     const widthAnimValue = new Animated.Value(1);
@@ -97,14 +103,21 @@ export default class Breathe extends React.Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
-      <TouchableHighlight
-        underlayColor={'#e6e9ec'}
-        style={styles.container}
-        onPress={this.toggleIsBreathing}
-      >
-        { this.renderImage() }
-      </TouchableHighlight>
+      <View>
+        <TouchableHighlight
+          underlayColor={'#e6e9ec'}
+          style={styles.container}
+          onPress={this.toggleIsBreathing}
+        >
+          { this.renderImage() }
+        </TouchableHighlight>
+        <Button
+          onPress={() => navigate('Journey')}
+          title="Journey"
+        />
+      </View>
     );
   }
 }

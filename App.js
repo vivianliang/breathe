@@ -2,6 +2,8 @@ import React from 'react';
 
 import Breathe from './components/Breathe';
 
-export default function () {
+const App = function App() {
   return <Breathe />;
-}
+};
+
+export default App;

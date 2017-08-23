@@ -3,25 +3,24 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'powderblue',
-    height: 150,
     alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'powderblue',
     borderColor: 'white',
     borderWidth: 0.5,
+    height: 150,
+    justifyContent: 'center',
   },
   text: {
     fontSize: 10,
   },
 });
 
-export default class JourneyItem extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>i still love you</Text>
-      </View>
-    );
-  }
-}
+const JourneyItem = function JourneyItem() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>i still love you</Text>
+    </View>
+  );
+};
 
+export default JourneyItem;

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 const JourneyItem = function JourneyItem() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>i still love you</Text>
+      <Text style={styles.text}>Your favorite day for breathing is Thursday</Text>
     </View>
   );
 };

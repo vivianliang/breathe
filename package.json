@@ -29,6 +29,7 @@
   "dependencies": {
     "expo": "17.0.x",
     "react": "16.0.0-alpha.6",
-    "react-native": "0.44.x"
+    "react-native": "0.44.x",
+    "react-native-swiper": "^1.5.10"
   }
 }

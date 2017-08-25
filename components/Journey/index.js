@@ -1,15 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import JourneyItem from './JourneyItem';
 
 const Journey = function Journey() {
   return (
-    <View>
+    <ScrollView>
       <JourneyItem />
       <JourneyItem />
       <JourneyItem />
       <JourneyItem />
-    </View>
+      <JourneyItem />
+    </ScrollView>
   );
 };
 

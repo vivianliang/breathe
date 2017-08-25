@@ -23,7 +23,6 @@ const App = function App() {
         <Journey />
       </View>
     </Swiper>
-
   );
 };
 

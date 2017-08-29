@@ -6,12 +6,12 @@ import Breathe from './index';
 
 describe('<Breathe />', () => {
   it('should render', () => {
-    const wrapper = shallow(<Breathe />);
+    const wrapper = shallow(<Breathe updateBreathingTime={jest.fn()} />);
     expect(wrapper.length).toEqual(1);
   });
 
   it('should have a default state', () => {
-    const wrapper = shallow(<Breathe />);
+    const wrapper = shallow(<Breathe updateBreathingTime={jest.fn()} />);
     const instance = wrapper.instance();
 
     const { isBreathing, widthAnim, widthAnimValue } = instance.state;
@@ -21,7 +21,7 @@ describe('<Breathe />', () => {
   });
 
   it('toggleIsBreathing', () => {
-    const wrapper = shallow(<Breathe />);
+    const wrapper = shallow(<Breathe updateBreathingTime={jest.fn()} />);
     const instance = wrapper.instance();
 
     const { widthAnim, widthAnimValue } = instance.state;

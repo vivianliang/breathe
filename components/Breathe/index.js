@@ -8,6 +8,7 @@ import {
 
 import startImage from '../../assets/images/circlePlay.png';
 import breathingImage from '../../assets/images/circleBreathing.png';
+import { getItem, setItem } from '../../utils/storage';
 
 const styles = StyleSheet.create({
   container: {
@@ -44,18 +45,24 @@ export default class Breathe extends React.Component {
       isBreathing: false,
       widthAnimValue,
       widthAnim,
+      taps: 0,
     };
 
     this.toggleIsBreathing = this.toggleIsBreathing.bind(this);
   }
 
-  toggleIsBreathing() {
+  async toggleIsBreathing() {
     const { isBreathing, widthAnim, widthAnimValue } = this.state;
     widthAnimValue.resetAnimation();
     if (!isBreathing) {
       widthAnim.start();
+      setItem('taps', this.state.taps);
+    } else {
+      // getItem('taps').then(val => console.log('val',val))
+      const val = await getItem('taps');
+      console.log('val', val);
     }
-    this.setState({ isBreathing: !isBreathing });
+    this.setState({ isBreathing: !isBreathing, taps: this.state.taps + 1 });
   }
 
   renderImage() {

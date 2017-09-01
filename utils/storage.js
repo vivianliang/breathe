@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native';
 
 const STORE = '@BreatheApp';
 
-export async function setItem(key, value) {
+export async function setStorageItem(key, value) {
   try {
     await AsyncStorage.setItem(`${STORE}:${key}`, JSON.stringify(value));
   } catch (error) {
@@ -11,10 +11,9 @@ export async function setItem(key, value) {
   }
 }
 
-export async function getItem(key) {
+export async function getStorageItem(key) {
   try {
     const value = await AsyncStorage.getItem(`${STORE}:${key}`);
-    // console.log('value', JSON.parse(value));
     return JSON.parse(value);
   } catch (error) {
     // TODO: do something with this. crashlytics?

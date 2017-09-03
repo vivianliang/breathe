@@ -4,10 +4,15 @@ import {
   Easing,
   Image,
   StyleSheet,
-  TouchableHighlight } from 'react-native';
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View } from 'react-native';
+import { LinearGradient } from 'expo';
 
 import startImage from '../../assets/images/circlePlay.png';
 import breathingImage from '../../assets/images/circleBreathing.png';
+import Styles, { green1, gray2, gray4, lightKhaki, lightSage } from '../../styles/common';
 
 const styles = StyleSheet.create({
   container: {
@@ -95,16 +100,32 @@ export default class Breathe extends React.Component {
       source={startImage}
     />);
   }
+//   <TouchableHighlight
+//   underlayColor={'#e6e9ec'}
+//   style={styles.container}
+//   onPress={this.toggleIsBreathing}
+// >
+//   { this.renderImage() }
+// </TouchableHighlight>
+//
 
   render() {
     return (
-      <TouchableHighlight
-        underlayColor={'#e6e9ec'}
-        style={styles.container}
-        onPress={this.toggleIsBreathing}
+      <LinearGradient
+        colors={[lightKhaki, lightSage]}
+        start={[0.1, 0.0]}
+        end={[1.0, 0.9]}
+        style={[Styles.bg, Styles.centerContents]}
       >
-        { this.renderImage() }
-      </TouchableHighlight>
+        <View style={[Styles.bigCircle, Styles.centerContents]}>
+          <View style={[Styles.littleCircle, Styles.centerContents]}>
+            <Text style={{fontFamily: 'muli-italic', color: gray2, fontSize: 24}}>breathe in</Text>
+          </View>
+        </View>
+        <TouchableOpacity style={[{width: '65%', height: 65, backgroundColor: green1, borderRadius: 10}, Styles.centerContents]}>
+          <Text style={{fontFamily: 'open-sans-bold', fontSize: 24, color: gray4}}>START</Text>
+        </TouchableOpacity>
+      </LinearGradient>
     );
   }
 }

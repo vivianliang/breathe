@@ -1,43 +1,42 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { LinearGradient } from 'expo';
+import { Font } from 'expo';
 
 import Breathe from './components/Breathe';
 import Journey from './components/Journey';
-import Styles, { lightKhaki, lightSage } from './styles/common';
 
-const styles = StyleSheet.create({
-  view: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-//           <Breathe />
+import Muli from './assets/fonts/Muli/Muli-Regular.ttf';
+import MuliItalic from './assets/fonts/Muli/Muli-Italic.ttf';
+import OpenSans from './assets/fonts/Open_Sans/OpenSans-Regular.ttf';
+import OpenSansBold from './assets/fonts/Open_Sans/OpenSans-Bold.ttf';
 
-const App = function App() {
-  return (
-    <Swiper loop={false} showsPagination={false} index={0}>
-      <View style={[Styles.container, Styles.centerContents]}>
-        <LinearGradient
-          colors={[lightKhaki, lightSage]}
-          start={[0.1, 0.0]}
-          end={[1.0, 0.9]}
-          style={[{ width: '100%', height: '100%' }, styles.view]}
-        >
-          <View style={[Styles.bigCircle, Styles.centerContents]}>
-            <View style={[Styles.littleCircle, Styles.centerContents]}>
-              <Text>Breathe in</Text>
-            </View>
-          </View>
-        </LinearGradient>
-      </View>
-      <View>
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { fontLoaded: false };
+  }
+
+  async componentWillMount() {
+    await Font.loadAsync({
+      muli: Muli,
+      'muli-italic': MuliItalic,
+      'open-sans': OpenSans,
+      'open-sans-bold': OpenSansBold,
+    });
+
+    this.setState({ fontLoaded: true });
+  }
+
+  render() {
+    const fontLoaded = this.state.fontLoaded;
+    if (!fontLoaded) {
+      return null;
+    }
+    return (
+      <Swiper loop={false} showsPagination={false} index={0}>
+        <Breathe />
         <Journey />
-      </View>
-    </Swiper>
-  );
-};
-
-export default App;
+      </Swiper>
+    );
+  }
+}

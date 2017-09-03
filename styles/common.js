@@ -18,6 +18,10 @@ export const yellow1 = '#fbf4e4';
 const { width: windowWidth } = Dimensions.get('window');
 
 export default StyleSheet.create({
+  bg: { // background is a reserved word and breaks stuff
+    width: '100%',
+    height: '100%',
+  },
   container: {
     flex: 1,
   },

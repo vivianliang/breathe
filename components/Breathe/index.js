@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#e6e9ec',
+    // backgroundColor: '#e6e9ec',
   },
   staticImage: {
     width: '100%',

@@ -1,24 +1,65 @@
 import React from 'react';
 import {
   Animated,
+  Dimensions,
   Easing,
   Image,
   StyleSheet,
   Text,
-  TouchableHighlight,
   TouchableOpacity,
-  View } from 'react-native';
+  View,
+} from 'react-native';
 import { LinearGradient } from 'expo';
 
 import startImage from '../../assets/images/circlePlay.png';
 import breathingImage from '../../assets/images/circleBreathing.png';
-import Styles, { green1, gray2, gray4, lightKhaki, lightSage } from '../../styles/common';
+import Styles, {
+  green1,
+  green3,
+  green4,
+  gray2,
+  gray4,
+  yellow1,
+} from '../../styles/common';
+
+const { width: windowWidth } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+  bigCircle: {
+    borderColor: green1,
+    borderRadius: (windowWidth * 0.9) / 0.5,
+    borderWidth: 1,
+    height: windowWidth * 0.872,
+    width: windowWidth * 0.872,
+  },
+  breatheText: {
+    color: gray2,
+    fontFamily: 'muli-italic',
+    fontSize: 24,
+  },
   container: {
     flex: 1,
     flexDirection: 'row',
-    // backgroundColor: '#e6e9ec',
+  },
+  littleCircle: {
+    backgroundColor: yellow1,
+    borderRadius: (windowWidth * 0.6) / 0.5,
+    opacity: 0.75,
+    height: windowWidth * 0.6,
+    width: windowWidth * 0.6,
+  },
+  startButton: {
+    backgroundColor: green1,
+    borderRadius: 10,
+    height: 65,
+    position: 'absolute',
+    top: '80%',
+    width: '65%',
+  },
+  startButtonText: {
+    color: gray4,
+    fontFamily: 'open-sans-bold',
+    fontSize: 24,
   },
   staticImage: {
     width: '100%',
@@ -100,31 +141,33 @@ export default class Breathe extends React.Component {
       source={startImage}
     />);
   }
-//   <TouchableHighlight
-//   underlayColor={'#e6e9ec'}
-//   style={styles.container}
-//   onPress={this.toggleIsBreathing}
-// >
-//   { this.renderImage() }
-// </TouchableHighlight>
-//
 
   render() {
+    const { isBreathing } = this.state;
     return (
       <LinearGradient
-        colors={[lightKhaki, lightSage]}
+        colors={[green4, green3]}
         start={[0.1, 0.0]}
         end={[1.0, 0.9]}
         style={[Styles.bg, Styles.centerContents]}
       >
-        <View style={[Styles.bigCircle, Styles.centerContents]}>
-          <View style={[Styles.littleCircle, Styles.centerContents]}>
-            <Text style={{fontFamily: 'muli-italic', color: gray2, fontSize: 24}}>breathe in</Text>
+        <View style={[Styles.centerContents]}>
+          <View style={[styles.bigCircle, Styles.centerContents]}>
+            <View style={[styles.littleCircle, Styles.centerContents]}>
+              { isBreathing &&
+                <Text onPress={this.toggleIsBreathing} style={styles.breatheText}>breathe in</Text>
+              }
+            </View>
           </View>
         </View>
-        <TouchableOpacity style={[{width: '65%', height: 65, backgroundColor: green1, borderRadius: 10}, Styles.centerContents]}>
-          <Text style={{fontFamily: 'open-sans-bold', fontSize: 24, color: gray4}}>START</Text>
-        </TouchableOpacity>
+        { !isBreathing &&
+          <TouchableOpacity
+            onPress={this.toggleIsBreathing}
+            style={[styles.startButton, Styles.centerContents]}
+          >
+            <Text style={styles.startButtonText}>START</Text>
+          </TouchableOpacity>
+        }
       </LinearGradient>
     );
   }

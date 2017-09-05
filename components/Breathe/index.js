@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo';
 
+import CircleButton from '../common/CircleButton';
 import startImage from '../../assets/images/circlePlay.png';
 import breathingImage from '../../assets/images/circleBreathing.png';
 import Styles, {
@@ -27,7 +28,7 @@ const { width: windowWidth } = Dimensions.get('window');
 const styles = StyleSheet.create({
   bigCircle: {
     borderColor: green1,
-    borderRadius: (windowWidth * 0.9) / 0.5,
+    borderRadius: (windowWidth * 0.872) / 2,
     borderWidth: 1,
     height: windowWidth * 0.872,
     width: windowWidth * 0.872,
@@ -37,13 +38,20 @@ const styles = StyleSheet.create({
     fontFamily: 'muli-italic',
     fontSize: 24,
   },
+  circleButtonBarContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    position: 'absolute',
+    top: '10%',
+    width: windowWidth * 0.68,
+  },
   container: {
     flex: 1,
     flexDirection: 'row',
   },
   littleCircle: {
     backgroundColor: yellow1,
-    borderRadius: (windowWidth * 0.6) / 0.5,
+    borderRadius: (windowWidth * 0.6) / 2,
     opacity: 0.75,
     height: windowWidth * 0.6,
     width: windowWidth * 0.6,
@@ -161,6 +169,16 @@ export default class Breathe extends React.Component {
           </View>
         </View>
         { !isBreathing &&
+          // Circle Buttons
+          <View style={[Styles.container, styles.circleButtonBarContainer]}>
+            <CircleButton onPress={() => null} />
+            <CircleButton onPress={() => null} />
+            <CircleButton onPress={() => null} />
+          </View>
+        }
+
+        { !isBreathing &&
+          // Start Button
           <TouchableOpacity
             onPress={this.toggleIsBreathing}
             style={[styles.startButton, Styles.centerContents]}

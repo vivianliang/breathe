@@ -10,7 +10,8 @@ import {
   View,
 } from 'react-native';
 import { LinearGradient } from 'expo';
-import PropTypes from 'prop-types';
+
+import { getStorageItem, setStorageItem } from '../../utils/storage';
 
 import CircleButton from '../common/CircleButton';
 import startImage from '../../assets/images/circlePlay.png';
@@ -104,7 +105,7 @@ export default class Breathe extends React.Component {
     this.toggleIsBreathing = this.toggleIsBreathing.bind(this);
   }
 
-  toggleIsBreathing() {
+  async toggleIsBreathing() {
     const { isBreathing, widthAnim, widthAnimValue } = this.state;
     widthAnimValue.resetAnimation();
 
@@ -113,8 +114,10 @@ export default class Breathe extends React.Component {
       // TODO: start timer
     } else {
       // TODO: stop timer (also start timer if we leave this page)
-      // TODO: call this.props.updateBreathingTime(breathingTime)
-      this.props.updateBreathingTime(10);
+      const recentBreathingTime = await getStorageItem('recentBreathingTime');
+      // TODO: remove console.log
+      console.log(recentBreathingTime);
+      await setStorageItem('recentBreathingTime', recentBreathingTime + 10);
     }
 
     this.setState({ isBreathing: !isBreathing });
@@ -198,7 +201,3 @@ export default class Breathe extends React.Component {
     );
   }
 }
-
-Breathe.propTypes = {
-  updateBreathingTime: PropTypes.func.isRequired,
-};

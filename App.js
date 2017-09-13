@@ -5,6 +5,8 @@ import { Font } from 'expo';
 import Breathe from './components/Breathe';
 import Journey from './components/Journey';
 
+import { setStorageItem } from './utils/storage';
+
 import Muli from './assets/fonts/Muli/Muli-Regular.ttf';
 import MuliItalic from './assets/fonts/Muli/Muli-Italic.ttf';
 import OpenSans from './assets/fonts/Open_Sans/OpenSans-Regular.ttf';
@@ -18,8 +20,6 @@ export default class App extends React.Component {
       fontLoaded: false,
       sessionBreathingTime: 0,
     };
-
-    this.updateBreathingTime = this.updateBreathingTime.bind(this);
   }
 
   async componentWillMount() {
@@ -31,10 +31,8 @@ export default class App extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
-  }
 
-  updateBreathingTime(newBreathingTime) {
-    this.setState({ sessionBreathingTime: this.state.sessionBreathingTime + newBreathingTime });
+    await setStorageItem('recentBreathingTime', 0);
   }
 
   render() {
@@ -44,7 +42,7 @@ export default class App extends React.Component {
     }
     return (
       <Swiper loop={false} showsPagination={false} index={0}>
-        <Breathe updateBreathingTime={this.updateBreathingTime} />
+        <Breathe />
         <Journey sessionBreathingTime={this.state.sessionBreathingTime} />
       </Swiper>
     );

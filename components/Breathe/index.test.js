@@ -6,12 +6,12 @@ import Breathe from './index';
 
 describe('<Breathe />', () => {
   it('should render', () => {
-    const wrapper = shallow(<Breathe />);
+    const wrapper = shallow(<Breathe updateBreathingTime={jest.fn()} />);
     expect(wrapper.length).toEqual(1);
   });
 
   it('should have a default state', () => {
-    const wrapper = shallow(<Breathe />);
+    const wrapper = shallow(<Breathe updateBreathingTime={jest.fn()} />);
     const instance = wrapper.instance();
 
     const { isBreathing, widthAnim, widthAnimValue } = instance.state;
@@ -21,7 +21,8 @@ describe('<Breathe />', () => {
   });
 
   it('toggleIsBreathing', () => {
-    const wrapper = shallow(<Breathe />);
+    const mockUpdateBreathingTime = jest.fn();
+    const wrapper = shallow(<Breathe updateBreathingTime={mockUpdateBreathingTime} />);
     const instance = wrapper.instance();
 
     const { widthAnim, widthAnimValue } = instance.state;
@@ -32,10 +33,12 @@ describe('<Breathe />', () => {
     expect(widthAnimValue.resetAnimation.mock.calls.length).toBe(1);
     expect(widthAnim.start).toHaveBeenCalled();
     expect(instance.state.isBreathing).toEqual(true);
+    expect(mockUpdateBreathingTime).not.toHaveBeenCalled();
 
     instance.toggleIsBreathing();
     expect(widthAnimValue.resetAnimation.mock.calls.length).toBe(2);
     expect(widthAnim.start.mock.calls.length).toBe(1);
     expect(instance.state.isBreathing).toEqual(false);
+    expect(mockUpdateBreathingTime).toHaveBeenCalled();
   });
 });

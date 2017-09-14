@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { LinearGradient } from 'expo';
+import PropTypes from 'prop-types';
 
 import CircleButton from '../common/CircleButton';
 import startImage from '../../assets/images/circlePlay.png';
@@ -106,9 +107,15 @@ export default class Breathe extends React.Component {
   toggleIsBreathing() {
     const { isBreathing, widthAnim, widthAnimValue } = this.state;
     widthAnimValue.resetAnimation();
+
     if (!isBreathing) {
       widthAnim.start();
+      // TODO: start timer
+    } else {
+      // TODO: stop timer (also start timer if we leave this page)
+      this.props.updateBreathingTime(10);
     }
+
     this.setState({ isBreathing: !isBreathing });
   }
 
@@ -190,3 +197,7 @@ export default class Breathe extends React.Component {
     );
   }
 }
+
+Breathe.propTypes = {
+  updateBreathingTime: PropTypes.func.isRequired,
+};

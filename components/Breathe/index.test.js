@@ -4,15 +4,20 @@ import { shallow } from 'enzyme';
 
 import Breathe from './index';
 
+const getComponent = () => {
+  const navigation = { navigation: jest.fn() };
+  const wrapper = shallow(<Breathe navigation={navigation} />);
+  return { wrapper, instance: wrapper.instance() };
+};
+
 describe('<Breathe />', () => {
   it('should render', () => {
-    const wrapper = shallow(<Breathe />);
+    const { wrapper } = getComponent();
     expect(wrapper.length).toEqual(1);
   });
 
   it('should have a default state', () => {
-    const wrapper = shallow(<Breathe />);
-    const instance = wrapper.instance();
+    const { instance } = getComponent();
 
     const { isBreathing, widthAnim, widthAnimValue } = instance.state;
     expect(isBreathing).toEqual(false);
@@ -21,8 +26,7 @@ describe('<Breathe />', () => {
   });
 
   it('toggleIsBreathing', () => {
-    const wrapper = shallow(<Breathe />);
-    const instance = wrapper.instance();
+    const { instance } = getComponent();
 
     const { widthAnim, widthAnimValue } = instance.state;
     widthAnimValue.resetAnimation = jest.fn();

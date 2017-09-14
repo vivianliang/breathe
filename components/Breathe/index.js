@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { LinearGradient } from 'expo';
+import PropTypes from 'prop-types';
 
 import CircleButton from '../common/CircleButton';
 import startImage from '../../assets/images/circlePlay.png';
@@ -152,6 +153,7 @@ export default class Breathe extends React.Component {
 
   render() {
     const { isBreathing } = this.state;
+    const { navigate } = this.props.navigation;
     return (
       <LinearGradient
         colors={[green4, green3]}
@@ -171,9 +173,9 @@ export default class Breathe extends React.Component {
         { !isBreathing &&
           // Circle Buttons
           <View style={[Styles.container, styles.circleButtonBarContainer]}>
-            <CircleButton onPress={() => null} />
-            <CircleButton onPress={() => null} />
-            <CircleButton onPress={() => null} />
+            <CircleButton onPress={() => navigate('Journey')} />
+            <CircleButton onPress={() => navigate('Journey')} />
+            <CircleButton onPress={() => navigate('Journey')} />
           </View>
         }
 
@@ -190,3 +192,9 @@ export default class Breathe extends React.Component {
     );
   }
 }
+
+Breathe.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

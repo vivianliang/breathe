@@ -1,5 +1,5 @@
 import React from 'react';
-import Swiper from 'react-native-swiper';
+import { StackNavigator } from 'react-navigation';
 import { Font } from 'expo';
 
 import Breathe from './components/Breathe';
@@ -9,6 +9,13 @@ import Muli from './assets/fonts/Muli/Muli-Regular.ttf';
 import MuliItalic from './assets/fonts/Muli/Muli-Italic.ttf';
 import OpenSans from './assets/fonts/Open_Sans/OpenSans-Regular.ttf';
 import OpenSansBold from './assets/fonts/Open_Sans/OpenSans-Bold.ttf';
+
+const AppNavigator = StackNavigator({
+  Breathe: { screen: Breathe },
+  Journey: { screen: Journey },
+}, {
+  headerMode: 'none',
+});
 
 export default class App extends React.Component {
   constructor(props) {
@@ -33,10 +40,7 @@ export default class App extends React.Component {
       return null;
     }
     return (
-      <Swiper loop={false} showsPagination={false} index={0}>
-        <Breathe />
-        <Journey />
-      </Swiper>
+      <AppNavigator />
     );
   }
 }

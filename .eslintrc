@@ -11,5 +11,4 @@
     jest: false,
     it: false,
   },
-  parser: "babel-eslint",
 }

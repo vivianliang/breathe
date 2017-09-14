@@ -5,7 +5,7 @@ import { Font } from 'expo';
 import Breathe from './components/Breathe';
 import Journey from './components/Journey';
 
-import { setStorageItem } from './utils/storage';
+import { getStorageItem, setStorageItem } from './utils/storage';
 
 import Muli from './assets/fonts/Muli/Muli-Regular.ttf';
 import MuliItalic from './assets/fonts/Muli/Muli-Italic.ttf';
@@ -18,8 +18,13 @@ export default class App extends React.Component {
 
     this.state = {
       fontLoaded: false,
-      sessionBreathingTime: 0,
+      breathingTimes: {
+        recent: 0,
+        total: 0,
+      },
     };
+
+    this.updateBreathingTime = this.updateBreathingTime.bind(this);
   }
 
   async componentWillMount() {
@@ -32,7 +37,19 @@ export default class App extends React.Component {
 
     this.setState({ fontLoaded: true });
 
-    await setStorageItem('recentBreathingTime', 0);
+    const breathingTimes = { ...this.state.breathingTimes };
+    breathingTimes.recent = await getStorageItem('recentBreathingTime');
+    breathingTimes.total = await getStorageItem('totalBreathingTime');
+    this.setState({ breathingTimes });
+  }
+
+  async updateBreathingTime(newBreathingTime) {
+    const breathingTimes = { ...this.state.breathingTimes };
+    breathingTimes.recent += newBreathingTime;
+    breathingTimes.total += newBreathingTime;
+    this.setState({ breathingTimes });
+    await setStorageItem('recentBreathingTime', breathingTimes.recent);
+    await setStorageItem('totalBreathingTime', breathingTimes.total);
   }
 
   render() {
@@ -42,8 +59,8 @@ export default class App extends React.Component {
     }
     return (
       <Swiper loop={false} showsPagination={false} index={0}>
-        <Breathe />
-        <Journey sessionBreathingTime={this.state.sessionBreathingTime} />
+        <Breathe updateBreathingTime={this.updateBreathingTime} />
+        <Journey breathingTimes={this.state.breathingTimes} />
       </Swiper>
     );
   }

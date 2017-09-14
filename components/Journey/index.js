@@ -5,8 +5,8 @@ import {
   StyleSheet,
   Text,
   View } from 'react-native';
+import PropTypes from 'prop-types';
 
-import { getStorageItem } from '../../utils/storage';
 import { gray1, green3 } from '../../styles/common';
 
 const { width: windowWidth } = Dimensions.get('window');
@@ -41,24 +41,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Journey extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      recentBreathingTime: '?',
-    };
-  }
-
-  async componentDidMount() {
-    this.getRecentBreathingTime().done();
-    console.log('mount');
-  }
-
-  async getRecentBreathingTime() {
-    const recentBreathingTime = await getStorageItem('recentBreathingTime');
-    this.setState({ recentBreathingTime });
-  }
-
+export default class Journey extends React.PureComponent {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -68,14 +51,14 @@ export default class Journey extends React.Component {
             Congrats!
           </Text>
           <Text style={styles.text}>
-            You focused on breathing for {this.state.recentBreathingTime} seconds!
+            You focused on breathing for {this.props.breathingTimes.recent} seconds!
           </Text>
         </View>
 
         {/* total cycle data */}
         <View style={styles.card}>
           <Text style={styles.text}>
-            You have taken a total of 1098 breaths.
+            You have breathed a total of {this.props.breathingTimes.total} seconds.
           </Text>
           <Text style={styles.largeText}>
             1.1k = 1 house
@@ -92,3 +75,14 @@ export default class Journey extends React.Component {
     );
   }
 }
+
+Journey.propTypes = {
+  breathingTimes: PropTypes.shape({
+    recent: PropTypes.number,
+    total: PropTypes.number,
+  }),
+};
+
+Journey.defaultProps = {
+  breathingTimes: 0,
+};

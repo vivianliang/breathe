@@ -84,5 +84,8 @@ Journey.propTypes = {
 };
 
 Journey.defaultProps = {
-  breathingTimes: 0,
+  breathingTimes: {
+    recent: 0,
+    total: 0,
+  },
 };

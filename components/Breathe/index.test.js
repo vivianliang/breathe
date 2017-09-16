@@ -57,17 +57,25 @@ describe('<Breathe />', () => {
     widthAnimValue.resetAnimation = jest.fn();
     widthAnim.start = jest.fn();
 
+    const now = new Date('2017-01-01 00:00:00');
+    const later = new Date('2017-01-01 00:00:10'); // 10 seconds later
+    Date.now = jest.fn().mockReturnValueOnce(now);
+
     instance.toggleIsBreathing();
     expect(widthAnimValue.resetAnimation.mock.calls.length).toBe(1);
     expect(widthAnim.start).toHaveBeenCalled();
     expect(instance.state.isBreathing).toEqual(true);
     expect(mockUpdate).not.toHaveBeenCalled();
+    expect(instance.state.timerStart).toEqual(now);
+    expect(instance.interval).toBeDefined();
+
+    instance.setState({ timerStop: later });
 
     instance.toggleIsBreathing();
     expect(widthAnimValue.resetAnimation.mock.calls.length).toBe(2);
     expect(widthAnim.start.mock.calls.length).toBe(1);
     expect(instance.state.isBreathing).toEqual(false);
-    expect(mockUpdate).toHaveBeenCalled();
+    expect(mockUpdate).toHaveBeenCalledWith(10);
   });
 
   it('should render text inside circle', () => {

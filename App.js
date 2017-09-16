@@ -24,6 +24,7 @@ export default class App extends React.Component {
       },
     };
 
+    this.resetRecentBreathingTime = this.resetRecentBreathingTime.bind(this);
     this.updateBreathingTime = this.updateBreathingTime.bind(this);
   }
 
@@ -43,6 +44,13 @@ export default class App extends React.Component {
     this.setState({ breathingTimes });
   }
 
+  async resetRecentBreathingTime() {
+    const breathingTimes = { ...this.state.breathingTimes };
+    breathingTimes.recent = 0;
+    this.setState({ breathingTimes });
+    await setStorageItem('recentBreathingTime', breathingTimes.recent);
+  }
+
   async updateBreathingTime(newBreathingTime) {
     const breathingTimes = { ...this.state.breathingTimes };
     breathingTimes.recent += newBreathingTime;
@@ -59,7 +67,10 @@ export default class App extends React.Component {
     }
     return (
       <Swiper loop={false} showsPagination={false} index={0}>
-        <Breathe updateBreathingTime={this.updateBreathingTime} />
+        <Breathe
+          updateBreathingTime={this.updateBreathingTime}
+          resetRecentBreathingTime={this.resetRecentBreathingTime}
+        />
         <Journey breathingTimes={this.state.breathingTimes} />
       </Swiper>
     );

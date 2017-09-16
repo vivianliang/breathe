@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     height: windowWidth * 0.6,
     width: windowWidth * 0.6,
   },
-  startButton: {
+  actionButton: {
     backgroundColor: green1,
     borderRadius: 10,
     height: 65,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     top: '80%',
     width: '65%',
   },
-  startButtonText: {
+  actionButtonText: {
     color: gray4,
     fontFamily: 'open-sans-bold',
     fontSize: 24,
@@ -103,12 +103,19 @@ export default class Breathe extends React.Component {
     };
 
     this.startBreathing = this.startBreathing.bind(this);
+    this.stopBreathing = this.stopBreathing.bind(this);
     this.toggleIsBreathing = this.toggleIsBreathing.bind(this);
   }
 
   startBreathing() {
+    this.props.resetRecentBreathingTime();
     this.setState({ isStarted: true });
     this.toggleIsBreathing();
+  }
+
+  stopBreathing() {
+    // TODO: navigate to Journey
+    this.setState({ isStarted: false });
   }
 
   toggleIsBreathing() {
@@ -176,14 +183,17 @@ export default class Breathe extends React.Component {
         <View style={[Styles.centerContents]}>
           <View style={[styles.bigCircle, Styles.centerContents]}>
             <View style={[styles.littleCircle, Styles.centerContents]}>
-              { isBreathing &&
+              { isStarted && isBreathing &&
                 <Text onPress={this.toggleIsBreathing} style={styles.breatheText}>breathe in</Text>
+              }
+              { isStarted && !isBreathing &&
+                <Text onPress={this.toggleIsBreathing} style={styles.breatheText}>paused</Text>
               }
             </View>
           </View>
         </View>
 
-        { !isBreathing &&
+        { !isStarted && !isBreathing &&
           // Circle Buttons
           <View style={[Styles.container, styles.circleButtonBarContainer]}>
             <CircleButton onPress={() => null} />
@@ -196,19 +206,19 @@ export default class Breathe extends React.Component {
           // Start Button
           <TouchableOpacity
             onPress={this.startBreathing}
-            style={[styles.startButton, Styles.centerContents]}
+            style={[styles.actionButton, Styles.centerContents]}
           >
-            <Text style={styles.startButtonText}>START</Text>
+            <Text style={styles.actionButtonText}>START</Text>
           </TouchableOpacity>
         }
 
         { isStarted && !isBreathing &&
           // Done Button
           <TouchableOpacity
-            onPress={this.toggleIsBreathing}
-            style={[styles.startButton, Styles.centerContents]}
+            onPress={this.stopBreathing}
+            style={[styles.actionButton, Styles.centerContents]}
           >
-            <Text style={styles.startButtonText}>DONE</Text>
+            <Text style={styles.actionButtonText}>DONE</Text>
           </TouchableOpacity>
         }
       </LinearGradient>
@@ -217,5 +227,6 @@ export default class Breathe extends React.Component {
 }
 
 Breathe.propTypes = {
+  resetRecentBreathingTime: PropTypes.func.isRequired,
   updateBreathingTime: PropTypes.func.isRequired,
 };

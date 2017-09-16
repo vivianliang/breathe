@@ -129,10 +129,10 @@ export default class Breathe extends React.Component {
       widthAnim.start();
 
       // start timer
-      this.setState({ timerStart: new Date() });
+      this.setState({ timerStart: Date.now() });
       this.interval = setInterval(() => {
-        this.setState({ timerStop: new Date() });
-      }, 10);
+        this.setState({ timerStop: Date.now() });
+      }, 30); // execute every 30ms
     } else {
       /* pause breathing */
       // update recent cycle with elapsed seconds

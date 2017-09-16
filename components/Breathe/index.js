@@ -98,6 +98,8 @@ export default class Breathe extends React.Component {
     this.state = {
       isStarted: false,
       isBreathing: false,
+      timerStart: null,
+      timerStop: null,
       widthAnimValue,
       widthAnim,
     };
@@ -119,15 +121,25 @@ export default class Breathe extends React.Component {
   }
 
   toggleIsBreathing() {
-    const { isBreathing, widthAnim, widthAnimValue } = this.state;
+    const { isBreathing, timerStart, timerStop, widthAnim, widthAnimValue } = this.state;
     widthAnimValue.resetAnimation();
 
     if (!isBreathing) {
+      /* continue breathing */
       widthAnim.start();
-      // TODO: start timer
+
+      // start timer
+      this.setState({ timerStart: new Date() });
+      this.interval = setInterval(() => {
+        this.setState({ timerStop: new Date() });
+      }, 10);
     } else {
-      // TODO: stop timer (also start timer if we leave this page)
-      this.props.updateBreathingTime(10);
+      /* pause breathing */
+      // update recent cycle with elapsed seconds
+      const elapsedSeconds = Math.round((timerStop - timerStart) / 1000);
+      this.props.updateBreathingTime(elapsedSeconds);
+      // clear timer
+      clearInterval(this.interval);
     }
 
     this.setState({ isBreathing: !isBreathing });

@@ -96,12 +96,19 @@ export default class Breathe extends React.Component {
       ]),
     );
     this.state = {
+      isStarted: false,
       isBreathing: false,
       widthAnimValue,
       widthAnim,
     };
 
+    this.startBreathing = this.startBreathing.bind(this);
     this.toggleIsBreathing = this.toggleIsBreathing.bind(this);
+  }
+
+  startBreathing() {
+    this.setState({ isStarted: true });
+    this.toggleIsBreathing();
   }
 
   toggleIsBreathing() {
@@ -158,7 +165,7 @@ export default class Breathe extends React.Component {
   }
 
   render() {
-    const { isBreathing } = this.state;
+    const { isStarted, isBreathing } = this.state;
     return (
       <LinearGradient
         colors={[green4, green3]}
@@ -175,6 +182,7 @@ export default class Breathe extends React.Component {
             </View>
           </View>
         </View>
+
         { !isBreathing &&
           // Circle Buttons
           <View style={[Styles.container, styles.circleButtonBarContainer]}>
@@ -184,13 +192,23 @@ export default class Breathe extends React.Component {
           </View>
         }
 
-        { !isBreathing &&
+        { !isStarted && !isBreathing &&
           // Start Button
+          <TouchableOpacity
+            onPress={this.startBreathing}
+            style={[styles.startButton, Styles.centerContents]}
+          >
+            <Text style={styles.startButtonText}>START</Text>
+          </TouchableOpacity>
+        }
+
+        { isStarted && !isBreathing &&
+          // Done Button
           <TouchableOpacity
             onPress={this.toggleIsBreathing}
             style={[styles.startButton, Styles.centerContents]}
           >
-            <Text style={styles.startButtonText}>START</Text>
+            <Text style={styles.startButtonText}>DONE</Text>
           </TouchableOpacity>
         }
       </LinearGradient>

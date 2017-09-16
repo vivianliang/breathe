@@ -173,6 +173,7 @@ export default class Breathe extends React.Component {
 
   render() {
     const { isStarted, isBreathing } = this.state;
+
     return (
       <LinearGradient
         colors={[green4, green3]}
@@ -183,11 +184,10 @@ export default class Breathe extends React.Component {
         <View style={[Styles.centerContents]}>
           <View style={[styles.bigCircle, Styles.centerContents]}>
             <View style={[styles.littleCircle, Styles.centerContents]}>
-              { isStarted && isBreathing &&
-                <Text onPress={this.toggleIsBreathing} style={styles.breatheText}>breathe in</Text>
-              }
-              { isStarted && !isBreathing &&
-                <Text onPress={this.toggleIsBreathing} style={styles.breatheText}>paused</Text>
+              { isStarted &&
+                <Text onPress={this.toggleIsBreathing} style={styles.breatheText}>
+                  {isBreathing ? 'breathe in' : 'paused'}
+                </Text>
               }
             </View>
           </View>
@@ -202,23 +202,13 @@ export default class Breathe extends React.Component {
           </View>
         }
 
-        { !isStarted && !isBreathing &&
-          // Start Button
+        { !isBreathing &&
+          // Start/Done Button
           <TouchableOpacity
-            onPress={this.startBreathing}
+            onPress={isStarted ? this.stopBreathing : this.startBreathing}
             style={[styles.actionButton, Styles.centerContents]}
           >
-            <Text style={styles.actionButtonText}>START</Text>
-          </TouchableOpacity>
-        }
-
-        { isStarted && !isBreathing &&
-          // Done Button
-          <TouchableOpacity
-            onPress={this.stopBreathing}
-            style={[styles.actionButton, Styles.centerContents]}
-          >
-            <Text style={styles.actionButtonText}>DONE</Text>
+            <Text style={styles.actionButtonText}>{isStarted ? 'DONE' : 'START'}</Text>
           </TouchableOpacity>
         }
       </LinearGradient>

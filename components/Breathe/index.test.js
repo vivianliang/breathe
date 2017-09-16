@@ -69,4 +69,8 @@ describe('<Breathe />', () => {
     expect(instance.state.isBreathing).toEqual(false);
     expect(mockUpdate).toHaveBeenCalled();
   });
+
+  it('should render start and stop buttons', () => {
+    // TODO
+  });
 });

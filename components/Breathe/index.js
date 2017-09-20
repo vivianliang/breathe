@@ -57,19 +57,6 @@ const styles = StyleSheet.create({
     height: windowWidth * 0.6,
     width: windowWidth * 0.6,
   },
-  actionButton: {
-    backgroundColor: green1,
-    borderRadius: 10,
-    height: 65,
-    position: 'absolute',
-    top: '80%',
-    width: '65%',
-  },
-  actionButtonText: {
-    color: gray4,
-    fontFamily: 'open-sans-bold',
-    fontSize: 24,
-  },
   staticImage: {
     width: '100%',
   },
@@ -218,9 +205,9 @@ export default class Breathe extends React.Component {
           // Start/Done Button
           <TouchableOpacity
             onPress={isStarted ? this.stopBreathing : this.startBreathing}
-            style={[styles.actionButton, Styles.centerContents]}
+            style={[Styles.actionButton, Styles.centerContents]}
           >
-            <Text style={styles.actionButtonText}>{isStarted ? 'DONE' : 'START'}</Text>
+            <Text style={Styles.actionButtonText}>{isStarted ? 'DONE' : 'START'}</Text>
           </TouchableOpacity>
         }
       </LinearGradient>

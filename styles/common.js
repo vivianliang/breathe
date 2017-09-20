@@ -28,4 +28,37 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  pushTop: {
+    marginTop: 32,
+  },
+  pushBottom: {
+    marginBottom: 32,
+  },
+  pushTopHalf: {
+    marginTop: 16,
+  },
+  pushBottomHalf: {
+    marginBottom: 16,
+  },
+  pushTopDouble: {
+    marginTop: 64,
+  },
+  pushBottomDouble: {
+    marginBottom: 64,
+  },
+
+  // components
+  actionButton: {
+    backgroundColor: green1,
+    borderRadius: 10,
+    height: 65,
+    position: 'absolute',
+    top: '80%',
+    width: '65%',
+  },
+  actionButtonText: {
+    color: gray4,
+    fontFamily: 'open-sans-bold',
+    fontSize: 24,
+  },
 });

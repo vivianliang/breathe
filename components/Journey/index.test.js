@@ -13,10 +13,10 @@ describe('<Journey />', () => {
     const wrapper = shallow(<Journey breathingTimes={{ recent: 5, total: 10 }} />);
     expect(wrapper.find('View').length).toEqual(3);
 
-    expect(wrapper.find('Text').length).toEqual(5);
+    expect(wrapper.find('Text').length).toEqual(6);
     expect(wrapper.find('Text').at(1).props().children).toEqual(
       ['You focused on breathing for ', 5, ' seconds!']);
     expect(wrapper.find('Text').at(2).props().children).toEqual(
-      ['You have breathed a total of ', 10, ' seconds.']);
+      ['You have taken a total of ', 10, ' breaths.']);
   });
 });

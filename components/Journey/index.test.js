@@ -25,6 +25,9 @@ describe('<Journey />', () => {
     const { instance } = getComponent();
     expect(instance.getTotalBreathingText()).toEqual('2 gallons of milk');
 
+    instance.props.breathingTimes.total = 12;
+    expect(instance.getTotalBreathingText()).toEqual('1 gallon of milk');
+
     instance.props.breathingTimes.total = 320;
     expect(instance.getTotalBreathingText()).toEqual('2 volleyballs');
   });
@@ -35,7 +38,7 @@ describe('<Journey />', () => {
 
     expect(wrapper.find('Text').length).toEqual(6);
     expect(wrapper.find('Text').at(1).props().children).toEqual(
-      ['You focused on breathing for ', 5, ' seconds!']);
+      ['You focused on breathing for ', 5, ' ', 'seconds', '!']);
     expect(wrapper.find('Text').at(2).props().children).toEqual(
       ['You have taken a total of ', 2, ' breaths.']);
     expect(wrapper.find('Text').at(3).props().children).toEqual('2 gallons of milk');

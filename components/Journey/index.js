@@ -8,6 +8,7 @@ import {
   View } from 'react-native';
 import { LinearGradient } from 'expo';
 import PropTypes from 'prop-types';
+import pluralize from 'pluralize';
 
 import Styles, { gray1, green3, green4 } from '../../styles/common';
 
@@ -60,16 +61,10 @@ export default class Journey extends React.Component {
   getTotalBreathingText() {
     const totalBreaths = this.getTotalBreaths();
     if (totalBreaths < 10) {
-      if (totalBreaths === 1) {
-        return '1 gallon of milk';
-      }
-      return `${totalBreaths} gallons of milk`;
+      return `${totalBreaths} ${pluralize('gallon', totalBreaths)} of milk`;
     }
     const numVolleyballs = Math.floor(totalBreaths / 10);
-    if (numVolleyballs === 1) {
-      return '1 volleyball';
-    }
-    return `${numVolleyballs} volleyballs`;
+    return `${numVolleyballs} ${pluralize('volleyballs', numVolleyballs)}`;
   }
 
   render() {
@@ -87,7 +82,7 @@ export default class Journey extends React.Component {
               Congrats!
             </Text>
             <Text style={[styles.text, Styles.pushBottom]}>
-              You focused on breathing for {this.props.breathingTimes.recent} seconds!
+              You focused on breathing for {this.props.breathingTimes.recent} {pluralize('second', this.props.breathingTimes.recent)}!
             </Text>
           </View>
 

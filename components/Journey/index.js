@@ -45,7 +45,33 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Journey extends React.PureComponent {
+export default class Journey extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.getTotalBreaths = this.getTotalBreaths.bind(this);
+    this.getTotalBreathingText = this.getTotalBreathingText.bind(this);
+  }
+
+  getTotalBreaths() {
+    return Math.round(this.props.breathingTimes.total / 16);
+  }
+
+  getTotalBreathingText() {
+    const totalBreaths = this.getTotalBreaths();
+    if (totalBreaths < 10) {
+      if (totalBreaths === 1) {
+        return '1 gallon of milk';
+      }
+      return `${totalBreaths} gallons of milk`;
+    }
+    const numVolleyballs = Math.floor(totalBreaths / 10);
+    if (numVolleyballs === 1) {
+      return '1 volleyball';
+    }
+    return `${numVolleyballs} volleyballs`;
+  }
+
   render() {
     return (
       <LinearGradient
@@ -68,10 +94,10 @@ export default class Journey extends React.PureComponent {
           {/* total cycle data */}
           <View style={styles.card}>
             <Text style={[styles.text, Styles.pushTop, Styles.pushBottomHalf]}>
-              You have taken a total of {Math.round(this.props.breathingTimes.total / 16)} breaths.
+              You have taken a total of {this.getTotalBreaths()} breaths.
             </Text>
             <Text style={[styles.largeText, Styles.pushBottom]}>
-              1.1k = 1 house
+              {this.getTotalBreathingText()}
             </Text>
           </View>
 

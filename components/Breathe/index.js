@@ -123,7 +123,7 @@ export default class Breathe extends React.Component {
     } else {
       /* pause breathing */
       // update recent cycle with elapsed seconds
-      const elapsedSeconds = Math.round((timerStop - timerStart) / 1000);
+      const elapsedSeconds = (timerStop - timerStart) / 1000;
       this.props.updateBreathingTime(elapsedSeconds);
       // clear timer
       clearInterval(this.interval);

@@ -55,7 +55,8 @@ export default class Journey extends React.Component {
   }
 
   getTotalBreaths() {
-    return Math.round(this.props.breathingTimes.total / 16);
+    // note: this returns a string
+    return (this.props.breathingTimes.total / 16).toFixed(1);
   }
 
   getTotalBreathingText() {
@@ -63,7 +64,7 @@ export default class Journey extends React.Component {
     if (totalBreaths < 10) {
       return `${totalBreaths} ${pluralize('gallon', totalBreaths)} of milk`;
     }
-    const numVolleyballs = Math.floor(totalBreaths / 10);
+    const numVolleyballs = (totalBreaths / 10).toFixed(1);
     return `${numVolleyballs} ${pluralize('volleyballs', numVolleyballs)}`;
   }
 
@@ -77,24 +78,35 @@ export default class Journey extends React.Component {
       >
         <ScrollView contentContainerStyle={styles.container}>
           {/* recent cycle data */}
-          <View style={styles.card}>
-            <Text style={[styles.titleText, Styles.pushTopDouble, Styles.pushBottomHalf]}>
-              Congrats!
-            </Text>
-            <Text style={[styles.text, Styles.pushBottom]}>
-              You focused on breathing for {this.props.breathingTimes.recent} {pluralize('second', this.props.breathingTimes.recent)}!
-            </Text>
-          </View>
+          { this.props.breathingTimes.recent === 0 && this.getTotalBreaths() === 0 &&
+            <View style={styles.card}>
+              <Text style={[styles.text, Styles.pushTop, Styles.pushBottom]}>
+                You haven&apos;t taken any breaths yet!
+              </Text>
+            </View>
+          }
+          { this.props.breathingTimes.recent > 0 &&
+            <View style={styles.card}>
+              <Text style={[styles.titleText, Styles.pushTop, Styles.pushBottomHalf]}>
+                Congrats!
+              </Text>
+              <Text style={[styles.text, Styles.pushBottom]}>
+                You focused on breathing for {this.props.breathingTimes.recent.toFixed(1)} {pluralize('second', this.props.breathingTimes.recent)}!
+              </Text>
+            </View>
+          }
 
           {/* total cycle data */}
-          <View style={styles.card}>
-            <Text style={[styles.text, Styles.pushTop, Styles.pushBottomHalf]}>
-              You have taken a total of {this.getTotalBreaths()} breaths.
-            </Text>
-            <Text style={[styles.largeText, Styles.pushBottom]}>
-              {this.getTotalBreathingText()}
-            </Text>
-          </View>
+          { this.getTotalBreaths() > 0 &&
+            <View style={styles.card}>
+              <Text style={[styles.text, Styles.pushTop, Styles.pushBottomHalf]}>
+                You have taken a total of {this.getTotalBreaths()} breaths.
+              </Text>
+              <Text style={[styles.largeText, Styles.pushBottom]}>
+                {this.getTotalBreathingText()}
+              </Text>
+            </View>
+          }
 
           {/* tips */}
           <View style={[styles.card, styles.tipCard]}>

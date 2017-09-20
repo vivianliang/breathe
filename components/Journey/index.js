@@ -68,7 +68,7 @@ export default class Journey extends React.PureComponent {
           {/* total cycle data */}
           <View style={styles.card}>
             <Text style={[styles.text, Styles.pushTop, Styles.pushBottomHalf]}>
-              You have taken a total of {this.props.breathingTimes.total} breaths.
+              You have taken a total of {Math.round(this.props.breathingTimes.total / 16)} breaths.
             </Text>
             <Text style={[styles.largeText, Styles.pushBottom]}>
               1.1k = 1 house

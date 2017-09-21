@@ -12,6 +12,7 @@ import {
 import { LinearGradient } from 'expo';
 import PropTypes from 'prop-types';
 
+import ActionButton from '../common/ActionButton';
 import CircleButton from '../common/CircleButton';
 import startImage from '../../assets/images/circlePlay.png';
 import breathingImage from '../../assets/images/circleBreathing.png';
@@ -203,12 +204,10 @@ export default class Breathe extends React.Component {
 
         { !isBreathing &&
           // Start/Done Button
-          <TouchableOpacity
+          <ActionButton
             onPress={isStarted ? this.stopBreathing : this.startBreathing}
-            style={[Styles.actionButton, Styles.centerContents]}
-          >
-            <Text style={Styles.actionButtonText}>{isStarted ? 'DONE' : 'START'}</Text>
-          </TouchableOpacity>
+            text={isStarted ? 'DONE' : 'START'}
+          />
         }
       </LinearGradient>
     );

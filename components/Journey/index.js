@@ -4,12 +4,12 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View } from 'react-native';
 import { LinearGradient } from 'expo';
 import PropTypes from 'prop-types';
 import pluralize from 'pluralize';
 
+import ActionButton from '../common/ActionButton';
 import Styles, { gray1, green3, green4 } from '../../styles/common';
 
 const { width: windowWidth } = Dimensions.get('window');
@@ -65,10 +65,11 @@ export default class Journey extends React.Component {
       return `${totalBreaths} ${pluralize('gallon', totalBreaths)} of milk`;
     }
     const numVolleyballs = (totalBreaths / 10).toFixed(1);
-    return `${numVolleyballs} ${pluralize('volleyballs', numVolleyballs)}`;
+    return `${numVolleyballs} ${pluralize('volleyball', numVolleyballs)}`;
   }
 
   render() {
+    const { breathingTimes } = this.props;
     return (
       <LinearGradient
         colors={[green4, green3]}
@@ -78,20 +79,20 @@ export default class Journey extends React.Component {
       >
         <ScrollView contentContainerStyle={styles.container}>
           {/* recent cycle data */}
-          { this.props.breathingTimes.recent === 0 && this.getTotalBreaths() === 0 &&
+          { breathingTimes.recent === 0 && this.getTotalBreaths() === 0 &&
             <View style={styles.card}>
               <Text style={[styles.text, Styles.pushTop, Styles.pushBottom]}>
                 You haven&apos;t taken any breaths yet!
               </Text>
             </View>
           }
-          { this.props.breathingTimes.recent > 0 &&
+          { breathingTimes.recent > 0 &&
             <View style={styles.card}>
               <Text style={[styles.titleText, Styles.pushTop, Styles.pushBottomHalf]}>
                 Congrats!
               </Text>
               <Text style={[styles.text, Styles.pushBottom]}>
-                You focused on breathing for {this.props.breathingTimes.recent.toFixed(1)} {pluralize('second', this.props.breathingTimes.recent)}!
+                You focused on breathing for {breathingTimes.recent.toFixed(1)} {pluralize('second', breathingTimes.recent)}!
               </Text>
             </View>
           }
@@ -116,9 +117,7 @@ export default class Journey extends React.Component {
           </View>
 
           {/* back home button */}
-          <TouchableOpacity style={[Styles.actionButton, Styles.centerContents]}>
-            <Text style={Styles.actionButtonText}>BACK HOME</Text>
-          </TouchableOpacity>
+          <ActionButton onPress={() => null} text="BACK HOME" />
         </ScrollView>
       </LinearGradient>
     );

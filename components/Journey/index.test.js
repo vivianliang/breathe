@@ -37,11 +37,17 @@ describe('<Journey />', () => {
     const { wrapper } = getComponent();
     expect(wrapper.find('View').length).toEqual(3);
 
-    expect(wrapper.find('Text').length).toEqual(6);
+    expect(wrapper.find('Text').length).toEqual(5);
     expect(wrapper.find('Text').at(1).props().children).toEqual(
       ['You focused on breathing for ', '5.0', ' ', 'seconds', '!']);
     expect(wrapper.find('Text').at(2).props().children).toEqual(
       ['You have taken a total of ', '2.0', ' breaths.']);
     expect(wrapper.find('Text').at(3).props().children).toEqual('2.0 gallons of milk');
+  });
+
+  it('should render back home button', () => {
+    const { wrapper } = getComponent();
+    expect(wrapper.find('ActionButton').length).toBe(1);
+    expect(wrapper.find('ActionButton').props().text).toBe('BACK HOME');
   });
 });

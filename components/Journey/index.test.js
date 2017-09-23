@@ -18,19 +18,18 @@ describe('<Journey />', () => {
 
   it('should getTotalBreaths', () => {
     const { instance } = getComponent();
-    expect(instance.getTotalBreaths()).toEqual('2.0');
+    expect(instance.getTotalBreaths()).toEqual(2);
   });
 
   it('should getTotalBreathingText', () => {
     const { instance } = getComponent();
-    expect(instance.getTotalBreathingText()).toEqual('2.0 gallons of milk');
+    expect(instance.getTotalBreathingText()).toEqual('2 gallons of milk');
 
     instance.props.breathingTimes.total = 16;
-    // if we get rid of the decimal place, this will be singular 'gallon'
-    expect(instance.getTotalBreathingText()).toEqual('1.0 gallons of milk');
+    expect(instance.getTotalBreathingText()).toEqual('1 gallon of milk');
 
     instance.props.breathingTimes.total = 320;
-    expect(instance.getTotalBreathingText()).toEqual('2.0 volleyballs');
+    expect(instance.getTotalBreathingText()).toEqual('2 volleyballs');
   });
 
   it('should render breathingTimes data', () => {
@@ -39,10 +38,10 @@ describe('<Journey />', () => {
 
     expect(wrapper.find('Text').length).toEqual(5);
     expect(wrapper.find('Text').at(1).props().children).toEqual(
-      ['You focused on breathing for ', '5.0', ' ', 'seconds', '!']);
+      ['You focused on breathing for ', 5, ' ', 'seconds', '!']);
     expect(wrapper.find('Text').at(2).props().children).toEqual(
-      ['You have taken a total of ', '2.0', ' breaths.']);
-    expect(wrapper.find('Text').at(3).props().children).toEqual('2.0 gallons of milk');
+      ['You have taken a total of ', 2, ' ', 'breaths', '.']);
+    expect(wrapper.find('Text').at(3).props().children).toEqual('2 gallons of milk');
   });
 
   it('should render back home button', () => {

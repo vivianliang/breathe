@@ -6,7 +6,6 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { LinearGradient } from 'expo';
@@ -21,7 +20,6 @@ import Styles, {
   green3,
   green4,
   gray2,
-  gray4,
   yellow1,
 } from '../../styles/common';
 

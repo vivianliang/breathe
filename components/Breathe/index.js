@@ -6,12 +6,12 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import PropTypes from 'prop-types';
 
+import ActionButton from '../common/ActionButton';
 import CircleButton from '../common/CircleButton';
 import startImage from '../../assets/images/circlePlay.png';
 import breathingImage from '../../assets/images/circleBreathing.png';
@@ -20,7 +20,6 @@ import Styles, {
   green3,
   green4,
   gray2,
-  gray4,
   yellow1,
 } from '../../styles/common';
 
@@ -56,19 +55,6 @@ const styles = StyleSheet.create({
     opacity: 0.75,
     height: windowWidth * 0.6,
     width: windowWidth * 0.6,
-  },
-  actionButton: {
-    backgroundColor: green1,
-    borderRadius: 10,
-    height: 65,
-    position: 'absolute',
-    top: '80%',
-    width: '65%',
-  },
-  actionButtonText: {
-    color: gray4,
-    fontFamily: 'open-sans-bold',
-    fontSize: 24,
   },
   staticImage: {
     width: '100%',
@@ -136,7 +122,7 @@ export default class Breathe extends React.Component {
     } else {
       /* pause breathing */
       // update recent cycle with elapsed seconds
-      const elapsedSeconds = Math.round((timerStop - timerStart) / 1000);
+      const elapsedSeconds = (timerStop - timerStart) / 1000;
       this.props.updateBreathingTime(elapsedSeconds);
       // clear timer
       clearInterval(this.interval);
@@ -216,12 +202,10 @@ export default class Breathe extends React.Component {
 
         { !isBreathing &&
           // Start/Done Button
-          <TouchableOpacity
+          <ActionButton
             onPress={isStarted ? this.stopBreathing : this.startBreathing}
-            style={[styles.actionButton, Styles.centerContents]}
-          >
-            <Text style={styles.actionButtonText}>{isStarted ? 'DONE' : 'START'}</Text>
-          </TouchableOpacity>
+            text={isStarted ? 'DONE' : 'START'}
+          />
         }
       </LinearGradient>
     );

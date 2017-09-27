@@ -19,11 +19,25 @@ import Styles, {
   gray2,
   gray4,
   yellow1,
+  white,
 } from '../../styles/common';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+  actionButton: {
+    backgroundColor: green1,
+    borderRadius: 10,
+    height: 65,
+    position: 'absolute',
+    top: '80%',
+    width: '65%',
+  },
+  actionButtonText: {
+    color: gray4,
+    fontFamily: 'open-sans-bold',
+    fontSize: 24,
+  },
   bigCircle: {
     borderColor: green1,
     borderRadius: (windowWidth * 0.872) / 2,
@@ -33,7 +47,7 @@ const styles = StyleSheet.create({
   },
   breatheText: {
     color: gray2,
-    fontFamily: 'muli-italic',
+    fontFamily: 'muli-bold-italic',
     fontSize: 24,
     position: 'absolute',
     top: (windowHeight * 0.5) - 12,
@@ -56,18 +70,19 @@ const styles = StyleSheet.create({
     height: windowWidth * 0.6,
     width: windowWidth * 0.6,
   },
-  actionButton: {
-    backgroundColor: green1,
-    borderRadius: 10,
-    height: 65,
+  pauseBar: {
     position: 'absolute',
-    top: '80%',
-    width: '65%',
+    backgroundColor: white,
+    height: 150,
+    width: '100%',
+    opacity: 0.5,
   },
-  actionButtonText: {
-    color: gray4,
-    fontFamily: 'open-sans-bold',
-    fontSize: 24,
+  pauseText: {
+    position: 'absolute',
+    top: windowHeight * 0.14,
+    color: gray2,
+    fontFamily: 'muli',
+    fontSize: 18,
   },
   staticImage: {
     width: '100%',
@@ -212,13 +227,29 @@ export default class Breathe extends React.Component {
           </View>
         }
 
+
         { isStarted &&
+          // pause reminder text
+          <Text style={styles.pauseText}>
+          tap to { isBreathing ? 'pause' : 'unpause' }
+          </Text>
+        }
+
+        { isStarted && !isBreathing &&
+          // pause status background bar
+          <View style={styles.pauseBar} />
+        }
+
+        { isStarted &&
+          // status text
           <Text onPress={this.toggleIsBreathing} style={styles.breatheText}>
             {isBreathing ? breatheStatusText : 'paused'}
           </Text>
         }
 
         { isStarted &&
+          // pause click area, not sure of a better way to do a full screen
+          // click area yet
           <TouchableOpacity
             onPress={this.toggleIsBreathing}
             style={[Styles.bg, { position: 'absolute' }]}

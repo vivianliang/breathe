@@ -31,4 +31,22 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  pushTop: {
+    marginTop: 32,
+  },
+  pushBottom: {
+    marginBottom: 32,
+  },
+  pushTopHalf: {
+    marginTop: 16,
+  },
+  pushBottomHalf: {
+    marginBottom: 16,
+  },
+  pushTopDouble: {
+    marginTop: 64,
+  },
+  pushBottomDouble: {
+    marginBottom: 64,
+  },
 });

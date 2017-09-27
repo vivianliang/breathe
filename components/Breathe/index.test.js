@@ -82,18 +82,13 @@ describe('<Breathe />', () => {
     const { wrapper, instance } = getComponent();
 
     instance.setState({ isStarted: false });
-    // TODO: need a better way to select specific Text component
-    // The component we're testing is not rendered.
-    // There is 1 other Text component later in the DOM.
-    expect(wrapper.find('Text').length).toEqual(1);
+    expect(wrapper.find('Text').length).toEqual(0);
 
     instance.setState({ isStarted: true });
     instance.setState({ isBreathing: true });
-    expect(wrapper.find('Text').length).toEqual(1);
     expect(wrapper.find('Text').at(0).props().children).toEqual('breathe in');
 
     instance.setState({ isBreathing: false });
-    expect(wrapper.find('Text').length).toEqual(2);
     expect(wrapper.find('Text').at(0).props().children).toEqual('paused');
   });
 
@@ -116,16 +111,16 @@ describe('<Breathe />', () => {
     const { wrapper, instance } = getComponent();
 
     instance.setState({ isBreathing: true });
-    expect(wrapper.find('TouchableOpacity').length).toBe(0);
+    expect(wrapper.find('ActionButton').length).toBe(0);
 
     instance.setState({ isStarted: false });
     instance.setState({ isBreathing: false });
-    expect(wrapper.find('TouchableOpacity').length).toBe(1);
-    expect(wrapper.find('TouchableOpacity').props().onPress).toEqual(instance.startBreathing);
-    expect(wrapper.find('TouchableOpacity').props().children.props.children).toBe('START');
+    expect(wrapper.find('ActionButton').length).toBe(1);
+    expect(wrapper.find('ActionButton').props().onPress).toEqual(instance.startBreathing);
+    expect(wrapper.find('ActionButton').props().text).toBe('START');
 
     instance.setState({ isStarted: true });
-    expect(wrapper.find('TouchableOpacity').props().onPress).toEqual(instance.stopBreathing);
-    expect(wrapper.find('TouchableOpacity').props().children.props.children).toBe('DONE');
+    expect(wrapper.find('ActionButton').props().onPress).toEqual(instance.stopBreathing);
+    expect(wrapper.find('ActionButton').props().text).toBe('DONE');
   });
 });

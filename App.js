@@ -9,6 +9,7 @@ import { getStorageItem, setStorageItem } from './utils/storage';
 
 import Muli from './assets/fonts/Muli/Muli-Regular.ttf';
 import MuliItalic from './assets/fonts/Muli/Muli-Italic.ttf';
+import MuliBoldItalic from './assets/fonts/Muli/Muli-BoldItalic.ttf';
 import OpenSans from './assets/fonts/Open_Sans/OpenSans-Regular.ttf';
 import OpenSansBold from './assets/fonts/Open_Sans/OpenSans-Bold.ttf';
 
@@ -32,6 +33,7 @@ export default class App extends React.Component {
     await Font.loadAsync({
       muli: Muli,
       'muli-italic': MuliItalic,
+      'muli-bold-italic': MuliBoldItalic,
       'open-sans': OpenSans,
       'open-sans-bold': OpenSansBold,
     });

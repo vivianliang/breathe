@@ -3,9 +3,9 @@ import {
   Animated,
   Dimensions,
   Easing,
-  Image,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { LinearGradient } from 'expo';
@@ -13,17 +13,16 @@ import PropTypes from 'prop-types';
 
 import ActionButton from '../common/ActionButton';
 import CircleButton from '../common/CircleButton';
-import startImage from '../../assets/images/circlePlay.png';
-import breathingImage from '../../assets/images/circleBreathing.png';
 import Styles, {
   green1,
   green3,
   green4,
   gray2,
   yellow1,
+  white,
 } from '../../styles/common';
 
-const { width: windowWidth } = Dimensions.get('window');
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   bigCircle: {
@@ -35,8 +34,10 @@ const styles = StyleSheet.create({
   },
   breatheText: {
     color: gray2,
-    fontFamily: 'muli-italic',
+    fontFamily: 'muli-bold-italic',
     fontSize: 24,
+    position: 'absolute',
+    top: (windowHeight * 0.5) - 12,
   },
   circleButtonBarContainer: {
     flexDirection: 'row',
@@ -56,6 +57,20 @@ const styles = StyleSheet.create({
     height: windowWidth * 0.6,
     width: windowWidth * 0.6,
   },
+  pauseBar: {
+    position: 'absolute',
+    backgroundColor: white,
+    height: 150,
+    width: '100%',
+    opacity: 0.5,
+  },
+  pauseText: {
+    position: 'absolute',
+    top: windowHeight * 0.14,
+    color: gray2,
+    fontFamily: 'muli',
+    fontSize: 18,
+  },
   staticImage: {
     width: '100%',
   },
@@ -69,19 +84,35 @@ export default class Breathe extends React.Component {
       Animated.sequence([
         Animated.timing(widthAnimValue, {
           toValue: 0,
-          delay: 500,
+          delay: 4000,
           duration: 4000,
-          easing: Easing.linear,
+          easing: Easing.out(Easing.ease),
         }),
         Animated.timing(widthAnimValue, {
           toValue: 1,
-          delay: 500,
+          delay: 4000,
           duration: 4000,
-          easing: Easing.linear,
+          easing: Easing.out(Easing.ease),
         }),
       ]),
     );
+
+    let previousValue = 1;
+    widthAnimValue.addListener(({ value }) => {
+      let breatheStatusText = '';
+      if (value === 1 || value === 0) {
+        breatheStatusText = 'hold';
+      } else if (value < previousValue) {
+        breatheStatusText = 'breathe out';
+      } else if (value > previousValue) {
+        breatheStatusText = 'breathe in';
+      }
+      previousValue = value;
+      this.setState({ breatheStatusText });
+    });
+
     this.state = {
+      breatheStatusText: 'get ready...',
       isStarted: false,
       isBreathing: false,
       timerStart: null,
@@ -126,6 +157,7 @@ export default class Breathe extends React.Component {
       this.props.updateBreathingTime(elapsedSeconds);
       // clear timer
       clearInterval(this.interval);
+      this.setState({ breatheStatusText: 'get ready...' });
     }
 
     this.setState({ isBreathing: !isBreathing });
@@ -134,43 +166,31 @@ export default class Breathe extends React.Component {
   renderImage() {
     const { widthAnimValue, isBreathing } = this.state;
     if (isBreathing) {
-      return (<Animated.Image
-        style={{
-          width: widthAnimValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['75%', '100%'],
-          }),
-          height: widthAnimValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['75%', '100%'],
-          }),
-          marginTop: widthAnimValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['25%', '0%'],
-          }),
-          marginLeft: widthAnimValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['12.5%', '0%'],
-          }),
-          marginRight: widthAnimValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['12.5%', '0%'],
-          }),
-        }}
-        resizeMode={Image.resizeMode.contain}
-        source={breathingImage}
+      return (<Animated.View
+        style={[styles.littleCircle, Styles.centerContents,
+          {
+            width: widthAnimValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [windowWidth * 0.15, windowWidth * 0.84],
+            }),
+            height: widthAnimValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [windowWidth * 0.15, windowWidth * 0.84],
+            }),
+            borderRadius: widthAnimValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [(windowWidth * 0.15) / 2, (windowWidth * 0.84) / 2],
+            }),
+          },
+        ]}
       />);
     }
 
-    return (<Image
-      style={styles.staticImage}
-      resizeMode={Image.resizeMode.contain}
-      source={startImage}
-    />);
+    return <View style={[styles.littleCircle, Styles.centerContents]} />;
   }
 
   render() {
-    const { isStarted, isBreathing } = this.state;
+    const { breatheStatusText, isStarted, isBreathing } = this.state;
 
     return (
       <LinearGradient
@@ -181,13 +201,7 @@ export default class Breathe extends React.Component {
       >
         <View style={[Styles.centerContents]}>
           <View style={[styles.bigCircle, Styles.centerContents]}>
-            <View style={[styles.littleCircle, Styles.centerContents]}>
-              { isStarted &&
-                <Text onPress={this.toggleIsBreathing} style={styles.breatheText}>
-                  {isBreathing ? 'breathe in' : 'paused'}
-                </Text>
-              }
-            </View>
+            { this.renderImage() }
           </View>
         </View>
 
@@ -198,6 +212,35 @@ export default class Breathe extends React.Component {
             <CircleButton onPress={() => null} />
             <CircleButton onPress={() => null} />
           </View>
+        }
+
+
+        { isStarted &&
+          // pause reminder text
+          <Text style={styles.pauseText}>
+          tap to { isBreathing ? 'pause' : 'unpause' }
+          </Text>
+        }
+
+        { isStarted && !isBreathing &&
+          // pause status background bar
+          <View style={styles.pauseBar} />
+        }
+
+        { isStarted &&
+          // status text
+          <Text onPress={this.toggleIsBreathing} style={styles.breatheText}>
+            {isBreathing ? breatheStatusText : 'paused'}
+          </Text>
+        }
+
+        { isStarted &&
+          // pause click area, not sure of a better way to do a full screen
+          // click area yet
+          <TouchableOpacity
+            onPress={this.toggleIsBreathing}
+            style={[Styles.bg, { position: 'absolute' }]}
+          />
         }
 
         { !isBreathing &&

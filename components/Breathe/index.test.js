@@ -1,5 +1,4 @@
 import React from 'react';
-import { Animated } from 'react-native';
 import { shallow } from 'enzyme';
 
 import Breathe from './index';
@@ -22,8 +21,26 @@ describe('<Breathe />', () => {
     const { isStarted, isBreathing, widthAnim, widthAnimValue } = instance.state;
     expect(isStarted).toEqual(false);
     expect(isBreathing).toEqual(false);
-    expect(widthAnimValue).toEqual(new Animated.Value(1));
+    expect(widthAnimValue).toBeDefined();
     expect(widthAnim).toHaveProperty('start');
+  });
+
+  it('should update the breatheStatusText on animation change', () => {
+    const { instance } = getComponent();
+    const { widthAnimValue } = instance.state;
+    expect(instance.state.breatheStatusText).toEqual('get ready...');
+
+    widthAnimValue.setValue(1);
+    expect(instance.state.breatheStatusText).toEqual('hold');
+
+    widthAnimValue.setValue(0.5);
+    expect(instance.state.breatheStatusText).toEqual('breathe out');
+
+    widthAnimValue.setValue(0);
+    expect(instance.state.breatheStatusText).toEqual('hold');
+
+    widthAnimValue.setValue(0.5);
+    expect(instance.state.breatheStatusText).toEqual('breathe in');
   });
 
   it('should startBreathing', () => {
@@ -86,10 +103,10 @@ describe('<Breathe />', () => {
 
     instance.setState({ isStarted: true });
     instance.setState({ isBreathing: true });
-    expect(wrapper.find('Text').at(0).props().children).toEqual('breathe in');
+    expect(wrapper.find('Text').at(1).props().children).toEqual('get ready...');
 
     instance.setState({ isBreathing: false });
-    expect(wrapper.find('Text').at(0).props().children).toEqual('paused');
+    expect(wrapper.find('Text').at(1).props().children).toEqual('paused');
   });
 
   it('should render circle buttons', () => {

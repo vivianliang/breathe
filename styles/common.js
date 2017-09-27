@@ -9,12 +9,15 @@ export const gray1 = '#667a80';
 export const gray2 = '#9daeb3';
 export const gray3 = '#ced2d4';
 export const gray4 = '#fdfbf5';
+
 export const green1 = '#5fb0a7';
 export const green2 = '#8bccc4';
 export const green3 = '#daf2e2'; // lightSage
 export const green4 = '#e8f5cb'; // lightKhaki
+
 export const yellow1 = '#fbf4e4';
 
+export const white = '#ffffff';
 
 export default StyleSheet.create({
   bg: { // background is a reserved word and breaks stuff

@@ -237,7 +237,7 @@ export default class Breathe extends React.Component {
         </View>
 
         { !isStarted && !isBreathing &&
-          // Circle Buttons
+          // circle buttons
           <View style={[Styles.container, styles.circleButtonBarContainer]}>
             <CircleButton onPress={() => navigate('Journey')} />
             <CircleButton onPress={() => navigate('Journey')} />
@@ -275,7 +275,7 @@ export default class Breathe extends React.Component {
         }
 
         { !isBreathing &&
-          // Start/Done Button
+          // start/done button
           <ActionButton
             onPress={isStarted ? this.stopBreathing : this.startBreathing}
             text={isStarted ? 'DONE' : 'START'}

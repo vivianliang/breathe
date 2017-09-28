@@ -18,6 +18,13 @@ describe('<Journey />', () => {
     expect(wrapper.length).toEqual(1);
   });
 
+  it('should have a default state', () => {
+    const { instance } = getComponent();
+    const { breathingTimes } = instance.state;
+    expect(breathingTimes.recent).toEqual(0);
+    expect(breathingTimes.total).toEqual(0);
+  });
+
   it('should get breathingTimes from storage at componentWillMount()', async () => {
     await setStorageItem('recentBreathingTime', 10);
     await setStorageItem('totalBreathingTime', 20);
@@ -44,6 +51,39 @@ describe('<Journey />', () => {
 
     instance.state.breathingTimes.total = 320;
     expect(instance.getTotalBreathingText()).toEqual('2 volleyballs');
+  });
+
+  it('should render null state for no breaths', async () => {
+    await setStorageItem('recentBreathingTime', 0);
+    await setStorageItem('totalBreathingTime', 0);
+    const { wrapper } = getComponent();
+
+    setTimeout(() => {
+      expect(wrapper.find('Text').length).toEqual(2); // null text and tip text
+      expect(wrapper.find('Text').at(0).props().children).toEqual(
+        "You haven't taken any breaths yet!");
+    });
+  });
+
+  it('should not render recent breaths if recent is zero when total is non-zero', async () => {
+    await setStorageItem('recentBreathingTime', 0);
+    await setStorageItem('totalBreathingTime', 16); // note: less than 16 rounds down to 0
+    const { wrapper } = getComponent();
+
+    setTimeout(() => {
+      expect(wrapper.find('Text').at(0).props().children).toEqual(
+        ['You have taken a total of ', 1, ' ', 'breath', '.']);
+    });
+  });
+
+  it('should not render total breaths if total is zero when recent is non-zero', async () => {
+    await setStorageItem('recentBreathingTime', 1);
+    await setStorageItem('totalBreathingTime', 0);
+    const { wrapper } = getComponent();
+
+    setTimeout(() => {
+      expect(wrapper.find('Text').at(0).props().children).toEqual('Congrats!');
+    });
   });
 
   it('should render breathingTimes data', async () => {

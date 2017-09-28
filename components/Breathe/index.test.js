@@ -18,13 +18,45 @@ describe('<Breathe />', () => {
 
   it('should have a default state', () => {
     const { instance } = getComponent();
+    const {
+      breatheStatusText,
+      isStarted,
+      isBreathing,
+      breathingTimes,
+      timerStart,
+      timerStop,
+      widthAnimValue,
+      widthAnim } = instance.state;
 
-    const { isStarted, isBreathing, widthAnim, widthAnimValue } = instance.state;
+    expect(breatheStatusText).toEqual('get ready...');
     expect(isStarted).toEqual(false);
     expect(isBreathing).toEqual(false);
+    expect(timerStart).toEqual(null);
+    expect(timerStop).toEqual(null);
+    expect(breathingTimes.recent).toEqual(0);
+    expect(breathingTimes.total).toEqual(0);
     expect(widthAnimValue).toBeDefined();
     expect(widthAnim).toHaveProperty('start');
   });
+
+  it('should update the breatheStatusText on animation change', () => {
+    const { instance } = getComponent();
+    const { widthAnimValue } = instance.state;
+    expect(instance.state.breatheStatusText).toEqual('get ready...');
+
+    widthAnimValue.setValue(1);
+    expect(instance.state.breatheStatusText).toEqual('hold');
+
+    widthAnimValue.setValue(0.5);
+    expect(instance.state.breatheStatusText).toEqual('breathe out');
+
+    widthAnimValue.setValue(0);
+    expect(instance.state.breatheStatusText).toEqual('hold');
+
+    widthAnimValue.setValue(0.5);
+    expect(instance.state.breatheStatusText).toEqual('breathe in');
+  });
+
 
   it('should get breathingTimes from storage at componentWillMount()', async () => {
     await setStorageItem('recentBreathingTime', 10);
@@ -61,24 +93,6 @@ describe('<Breathe />', () => {
     expect(await getStorageItem('totalBreathingTime')).toEqual(15);
   });
 
-  it('should update the breatheStatusText on animation change', () => {
-    const { instance } = getComponent();
-    const { widthAnimValue } = instance.state;
-    expect(instance.state.breatheStatusText).toEqual('get ready...');
-
-    widthAnimValue.setValue(1);
-    expect(instance.state.breatheStatusText).toEqual('hold');
-
-    widthAnimValue.setValue(0.5);
-    expect(instance.state.breatheStatusText).toEqual('breathe out');
-
-    widthAnimValue.setValue(0);
-    expect(instance.state.breatheStatusText).toEqual('hold');
-
-    widthAnimValue.setValue(0.5);
-    expect(instance.state.breatheStatusText).toEqual('breathe in');
-  });
-
   it('should startBreathing', () => {
     const { instance } = getComponent();
     instance.toggleIsBreathing = jest.fn();
@@ -94,6 +108,7 @@ describe('<Breathe />', () => {
     const { instance } = getComponent();
     instance.stopBreathing();
     expect(instance.state.isStarted).toBe(false);
+    expect(instance.props.navigation.navigate).toHaveBeenCalledWith('Journey');
   });
 
   it('should toggleIsBreathing', () => {

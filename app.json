@@ -1,5 +1,15 @@
 {
   "expo": {
-    "sdkVersion": "17.0.0"
+    "name": "Breathe Simple",
+    "icon": "./assets/images/icon.png",
+    "version": "0.0.1",
+    "slug": "breathe-simple",
+    "sdkVersion": "17.0.0",
+    "ios": {
+      "bundleIdentifier": "com.breathe.breathesimple"
+    },
+    "android": {
+      "package": "com.breathe.breathesimple"
+    }
   }
-}
+ }

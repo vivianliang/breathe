@@ -5,8 +5,6 @@ import { Font } from 'expo';
 import Breathe from './components/Breathe';
 import Journey from './components/Journey';
 
-import { getStorageItem, setStorageItem } from './utils/storage';
-
 import Muli from './assets/fonts/Muli/Muli-Regular.ttf';
 import MuliItalic from './assets/fonts/Muli/Muli-Italic.ttf';
 import MuliBoldItalic from './assets/fonts/Muli/Muli-BoldItalic.ttf';
@@ -18,6 +16,7 @@ const AppNavigator = StackNavigator({
   Journey: { screen: Journey },
 }, {
   headerMode: 'none',
+  cardStyle: {backgroundColor: 'transparent'},
 });
 
 export default class App extends React.Component {
@@ -26,14 +25,7 @@ export default class App extends React.Component {
 
     this.state = {
       fontLoaded: false,
-      breathingTimes: {
-        recent: 0,
-        total: 0,
-      },
     };
-
-    this.resetRecentBreathingTime = this.resetRecentBreathingTime.bind(this);
-    this.updateBreathingTime = this.updateBreathingTime.bind(this);
   }
 
   async componentWillMount() {
@@ -46,27 +38,6 @@ export default class App extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
-
-    const breathingTimes = { ...this.state.breathingTimes };
-    breathingTimes.recent = await getStorageItem('recentBreathingTime');
-    breathingTimes.total = await getStorageItem('totalBreathingTime');
-    this.setState({ breathingTimes });
-  }
-
-  async resetRecentBreathingTime() {
-    const breathingTimes = { ...this.state.breathingTimes };
-    breathingTimes.recent = 0;
-    this.setState({ breathingTimes });
-    await setStorageItem('recentBreathingTime', breathingTimes.recent);
-  }
-
-  async updateBreathingTime(newBreathingTime) {
-    const breathingTimes = { ...this.state.breathingTimes };
-    breathingTimes.recent += newBreathingTime;
-    breathingTimes.total += newBreathingTime;
-    this.setState({ breathingTimes });
-    await setStorageItem('recentBreathingTime', breathingTimes.recent);
-    await setStorageItem('totalBreathingTime', breathingTimes.total);
   }
 
   render() {

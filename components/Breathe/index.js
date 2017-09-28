@@ -11,6 +11,7 @@ import {
 import { LinearGradient } from 'expo';
 import PropTypes from 'prop-types';
 
+import { getStorageItem, setStorageItem } from '../../utils/storage';
 import ActionButton from '../common/ActionButton';
 import CircleButton from '../common/CircleButton';
 import Styles, {
@@ -117,6 +118,10 @@ export default class Breathe extends React.Component {
       isBreathing: false,
       timerStart: null,
       timerStop: null,
+      breathingTimes: {
+        recent: 0,
+        total: 0,
+      },
       widthAnimValue,
       widthAnim,
     };
@@ -124,17 +129,42 @@ export default class Breathe extends React.Component {
     this.startBreathing = this.startBreathing.bind(this);
     this.stopBreathing = this.stopBreathing.bind(this);
     this.toggleIsBreathing = this.toggleIsBreathing.bind(this);
+    this.resetRecentBreathingTime = this.resetRecentBreathingTime.bind(this);
+    this.updateBreathingTime = this.updateBreathingTime.bind(this);
+  }
+
+  async componentWillMount() {
+    const breathingTimes = { ...this.state.breathingTimes };
+    breathingTimes.recent = await getStorageItem('recentBreathingTime');
+    breathingTimes.total = await getStorageItem('totalBreathingTime');
+    this.setState({ breathingTimes });
+  }
+
+  async resetRecentBreathingTime() {
+    const breathingTimes = { ...this.state.breathingTimes };
+    breathingTimes.recent = 0;
+    this.setState({ breathingTimes });
+    await setStorageItem('recentBreathingTime', breathingTimes.recent);
+  }
+
+  async updateBreathingTime(newBreathingTime) {
+    const breathingTimes = { ...this.state.breathingTimes };
+    breathingTimes.recent += newBreathingTime;
+    breathingTimes.total += newBreathingTime;
+    this.setState({ breathingTimes });
+    await setStorageItem('recentBreathingTime', breathingTimes.recent);
+    await setStorageItem('totalBreathingTime', breathingTimes.total);
   }
 
   startBreathing() {
-    this.props.resetRecentBreathingTime();
+    this.resetRecentBreathingTime();
     this.setState({ isStarted: true });
     this.toggleIsBreathing();
   }
 
   stopBreathing() {
-    // TODO: navigate to Journey
     this.setState({ isStarted: false });
+    this.props.navigation.navigate('Journey');
   }
 
   toggleIsBreathing() {
@@ -154,7 +184,7 @@ export default class Breathe extends React.Component {
       /* pause breathing */
       // update recent cycle with elapsed seconds
       const elapsedSeconds = (timerStop - timerStart) / 1000;
-      this.props.updateBreathingTime(elapsedSeconds);
+      this.updateBreathingTime(elapsedSeconds);
       // clear timer
       clearInterval(this.interval);
       this.setState({ breatheStatusText: 'get ready...' });
@@ -191,6 +221,7 @@ export default class Breathe extends React.Component {
 
   render() {
     const { breatheStatusText, isStarted, isBreathing } = this.state;
+    const { navigate } = this.props.navigation;
 
     return (
       <LinearGradient
@@ -206,11 +237,11 @@ export default class Breathe extends React.Component {
         </View>
 
         { !isStarted && !isBreathing &&
-          // Circle Buttons
+          // circle buttons
           <View style={[Styles.container, styles.circleButtonBarContainer]}>
-            <CircleButton onPress={() => null} />
-            <CircleButton onPress={() => null} />
-            <CircleButton onPress={() => null} />
+            <CircleButton onPress={() => navigate('Journey')} />
+            <CircleButton onPress={() => navigate('Journey')} />
+            <CircleButton onPress={() => navigate('Journey')} />
           </View>
         }
 
@@ -244,7 +275,7 @@ export default class Breathe extends React.Component {
         }
 
         { !isBreathing &&
-          // Start/Done Button
+          // start/done button
           <ActionButton
             onPress={isStarted ? this.stopBreathing : this.startBreathing}
             text={isStarted ? 'DONE' : 'START'}
@@ -256,6 +287,7 @@ export default class Breathe extends React.Component {
 }
 
 Breathe.propTypes = {
-  resetRecentBreathingTime: PropTypes.func.isRequired,
-  updateBreathingTime: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };

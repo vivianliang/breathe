@@ -9,6 +9,7 @@ import { LinearGradient } from 'expo';
 import PropTypes from 'prop-types';
 import pluralize from 'pluralize';
 
+import { getStorageItem } from '../../utils/storage';
 import ActionButton from '../common/ActionButton';
 import Styles, { gray1, green3, green4 } from '../../styles/common';
 
@@ -50,12 +51,26 @@ export default class Journey extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      breathingTimes: {
+        recent: 0,
+        total: 0,
+      },
+    };
+
     this.getTotalBreaths = this.getTotalBreaths.bind(this);
     this.getTotalBreathingText = this.getTotalBreathingText.bind(this);
   }
 
+  async componentWillMount() {
+    const breathingTimes = { ...this.state.breathingTimes };
+    breathingTimes.recent = await getStorageItem('recentBreathingTime');
+    breathingTimes.total = await getStorageItem('totalBreathingTime');
+    this.setState({ breathingTimes });
+  }
+
   getTotalBreaths() {
-    return Math.floor(this.props.breathingTimes.total / 16);
+    return Math.floor(this.state.breathingTimes.total / 16);
   }
 
   getTotalBreathingText() {
@@ -68,7 +83,8 @@ export default class Journey extends React.Component {
   }
 
   render() {
-    const recentBreaths = Math.floor(this.props.breathingTimes.recent);
+    const { goBack } = this.props.navigation;
+    const recentBreaths = Math.floor(this.state.breathingTimes.recent);
     const totalBreaths = this.getTotalBreaths();
     return (
       <LinearGradient
@@ -117,7 +133,7 @@ export default class Journey extends React.Component {
           </View>
 
           {/* back home button */}
-          <ActionButton onPress={() => null} text="BACK HOME" />
+          <ActionButton onPress={() => goBack()} text="BACK HOME" />
         </ScrollView>
       </LinearGradient>
     );
@@ -125,15 +141,7 @@ export default class Journey extends React.Component {
 }
 
 Journey.propTypes = {
-  breathingTimes: PropTypes.shape({
-    recent: PropTypes.number,
-    total: PropTypes.number,
-  }),
-};
-
-Journey.defaultProps = {
-  breathingTimes: {
-    recent: 0,
-    total: 0,
-  },
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
 };

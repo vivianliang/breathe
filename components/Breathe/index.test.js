@@ -2,11 +2,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import Breathe from './index';
+import { getStorageItem, setStorageItem } from '../../utils/storage';
 
 const getComponent = () => {
-  const wrapper = shallow(
-    <Breathe updateBreathingTime={jest.fn()} resetRecentBreathingTime={jest.fn()} />,
-  );
+  const navigation = { navigate: jest.fn() };
+  const wrapper = shallow(<Breathe navigation={navigation} />);
   return { wrapper, instance: wrapper.instance() };
 };
 
@@ -18,9 +18,23 @@ describe('<Breathe />', () => {
 
   it('should have a default state', () => {
     const { instance } = getComponent();
-    const { isStarted, isBreathing, widthAnim, widthAnimValue } = instance.state;
+    const {
+      breatheStatusText,
+      isStarted,
+      isBreathing,
+      breathingTimes,
+      timerStart,
+      timerStop,
+      widthAnimValue,
+      widthAnim } = instance.state;
+
+    expect(breatheStatusText).toEqual('get ready...');
     expect(isStarted).toEqual(false);
     expect(isBreathing).toEqual(false);
+    expect(timerStart).toEqual(null);
+    expect(timerStop).toEqual(null);
+    expect(breathingTimes.recent).toEqual(0);
+    expect(breathingTimes.total).toEqual(0);
     expect(widthAnimValue).toBeDefined();
     expect(widthAnim).toHaveProperty('start');
   });
@@ -43,16 +57,49 @@ describe('<Breathe />', () => {
     expect(instance.state.breatheStatusText).toEqual('breathe in');
   });
 
+
+  it('should get breathingTimes from storage at componentWillMount()', async () => {
+    await setStorageItem('recentBreathingTime', 10);
+    await setStorageItem('totalBreathingTime', 20);
+    const { instance } = getComponent();
+    setTimeout(() => {
+      expect(instance.state.breathingTimes.recent).toEqual(10);
+      expect(instance.state.breathingTimes.total).toEqual(20);
+    });
+  });
+
+  it('should resetRecentBreathingTime()', async () => {
+    await setStorageItem('recentBreathingTime', 10);
+    const { instance } = getComponent();
+    instance.state.breathingTimes.recent = 10;
+
+    instance.resetRecentBreathingTime();
+    expect(instance.state.breathingTimes.recent).toEqual(0);
+    expect(await getStorageItem('recentBreathingTime')).toEqual(0);
+  });
+
+  it('should updateBreathingTime()', async () => {
+    const { instance } = getComponent();
+
+    expect(instance.state.breathingTimes.recent).toEqual(0);
+    expect(instance.state.breathingTimes.total).toEqual(0);
+    instance.state.breathingTimes.total = 5;
+
+    instance.updateBreathingTime(10);
+    expect(instance.state.breathingTimes.recent).toEqual(10);
+    expect(instance.state.breathingTimes.total).toEqual(15);
+
+    expect(await getStorageItem('recentBreathingTime')).toEqual(10);
+    expect(await getStorageItem('totalBreathingTime')).toEqual(15);
+  });
+
   it('should startBreathing', () => {
-    const mockReset = jest.fn();
-    const wrapper = shallow(
-      <Breathe updateBreathingTime={jest.fn()} resetRecentBreathingTime={mockReset} />,
-    );
-    const instance = wrapper.instance();
+    const { instance } = getComponent();
     instance.toggleIsBreathing = jest.fn();
+    instance.resetRecentBreathingTime = jest.fn();
 
     instance.startBreathing();
-    expect(mockReset).toHaveBeenCalled();
+    expect(instance.resetRecentBreathingTime).toHaveBeenCalled();
     expect(instance.state.isStarted).toBe(true);
     expect(instance.toggleIsBreathing).toHaveBeenCalled();
   });
@@ -61,18 +108,17 @@ describe('<Breathe />', () => {
     const { instance } = getComponent();
     instance.stopBreathing();
     expect(instance.state.isStarted).toBe(false);
+    expect(instance.props.navigation.navigate).toHaveBeenCalledWith('Journey');
   });
 
   it('should toggleIsBreathing', () => {
-    const mockUpdate = jest.fn();
-    const wrapper = shallow(
-      <Breathe updateBreathingTime={mockUpdate} resetRecentBreathingTime={jest.fn()} />,
-    );
-    const instance = wrapper.instance();
+    const { instance } = getComponent();
 
     const { widthAnim, widthAnimValue } = instance.state;
     widthAnimValue.resetAnimation = jest.fn();
     widthAnim.start = jest.fn();
+
+    instance.updateBreathingTime = jest.fn();
 
     const now = new Date('2017-01-01 00:00:00');
     const later = new Date('2017-01-01 00:00:10'); // 10 seconds later
@@ -82,7 +128,7 @@ describe('<Breathe />', () => {
     expect(widthAnimValue.resetAnimation.mock.calls.length).toBe(1);
     expect(widthAnim.start).toHaveBeenCalled();
     expect(instance.state.isBreathing).toEqual(true);
-    expect(mockUpdate).not.toHaveBeenCalled();
+    expect(instance.updateBreathingTime).not.toHaveBeenCalled();
     expect(instance.state.timerStart).toEqual(now);
     expect(instance.interval).toBeDefined();
 
@@ -92,7 +138,7 @@ describe('<Breathe />', () => {
     expect(widthAnimValue.resetAnimation.mock.calls.length).toBe(2);
     expect(widthAnim.start.mock.calls.length).toBe(1);
     expect(instance.state.isBreathing).toEqual(false);
-    expect(mockUpdate).toHaveBeenCalledWith(10);
+    expect(instance.updateBreathingTime).toHaveBeenCalledWith(10);
   });
 
   it('should render text inside circle', () => {

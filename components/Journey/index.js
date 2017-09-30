@@ -11,9 +11,9 @@ import pluralize from 'pluralize';
 
 import { getStorageItem } from '../../utils/storage';
 import { getRandomInt } from '../../utils/utils';
+import { tips } from './tips';
 import ActionButton from '../common/ActionButton';
 import Styles, { gray1, green3, green4 } from '../../styles/common';
-import { tips } from './tips';
 
 const { width: windowWidth } = Dimensions.get('window');
 

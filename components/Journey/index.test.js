@@ -4,6 +4,9 @@ import { shallow } from 'enzyme';
 import Journey from './index';
 import { setStorageItem } from '../../utils/storage';
 
+const utils = require('../../utils/utils');
+const tips = require('./tips');
+
 const getComponent = () => {
   const navigation = { goBack: jest.fn() };
   const wrapper = shallow(
@@ -100,6 +103,22 @@ describe('<Journey />', () => {
       expect(wrapper.find('Text').at(2).props().children).toEqual(
         ['You have taken a total of ', 2, ' ', 'breaths', '.']);
       expect(wrapper.find('Text').at(3).props().children).toEqual('2 gallons of milk');
+    });
+  });
+
+  it('should render tips', async () => {
+    // hide recent cycle and total data Views
+    await setStorageItem('recentBreathingTime', 0);
+    await setStorageItem('totalBreathingTime', 0);
+    const { wrapper } = getComponent();
+
+    utils.getRandomInt = jest.fn();
+    utils.getRandomInt.mockReturnValueOnce(1);
+    tips.tips = ['tip1', 'tip2', 'tip3'];
+
+    setTimeout(() => {
+      expect(wrapper.find('Text').at(1).props().children).toEqual('tip2');
+      expect(utils.getRandomInt).toHaveBeenCalledWith(0, 3); // 3 = length of tips
     });
   });
 

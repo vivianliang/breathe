@@ -160,7 +160,7 @@ describe('<Breathe />', () => {
 
     instance.setState({ isStarted: false });
     instance.setState({ isBreathing: false });
-    expect(wrapper.find('CircleButton').length).toEqual(3);
+    expect(wrapper.find('CircleButton').length).toEqual(1);
 
     instance.setState({ isStarted: true });
     expect(wrapper.find('CircleButton').length).toEqual(0);

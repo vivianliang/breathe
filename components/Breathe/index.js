@@ -23,6 +23,8 @@ import Styles, {
   white,
 } from '../../styles/common';
 
+const journeyCircle = require('../../assets/images/journeycircle.png');
+
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
     top: (windowHeight * 0.5) - 12,
   },
   circleButtonBarContainer: {
-    flexDirection: 'row',
+    alignItems: 'flex-end',
     justifyContent: 'space-between',
     position: 'absolute',
     top: '10%',
@@ -239,9 +241,11 @@ export default class Breathe extends React.Component {
         { !isStarted && !isBreathing &&
           // circle buttons
           <View style={[Styles.container, styles.circleButtonBarContainer]}>
-            <CircleButton onPress={() => navigate('Journey')} />
-            <CircleButton onPress={() => navigate('Journey')} />
-            <CircleButton onPress={() => navigate('Journey')} />
+            <CircleButton
+              onPress={() => navigate('Journey')}
+              image={journeyCircle}
+              label="Journey"
+            />
           </View>
         }
 

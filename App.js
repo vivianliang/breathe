@@ -16,7 +16,7 @@ const AppNavigator = StackNavigator({
   Journey: { screen: Journey },
 }, {
   headerMode: 'none',
-  cardStyle: {backgroundColor: 'transparent'},
+  cardStyle: { backgroundColor: 'transparent' },
 });
 
 export default class App extends React.Component {

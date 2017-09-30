@@ -10,6 +10,8 @@ import PropTypes from 'prop-types';
 import pluralize from 'pluralize';
 
 import { getStorageItem } from '../../utils/storage';
+import { getRandomInt } from '../../utils/utils';
+import { tips } from './tips';
 import ActionButton from '../common/ActionButton';
 import Styles, { gray1, green3, green4 } from '../../styles/common';
 
@@ -128,7 +130,7 @@ export default class Journey extends React.Component {
           {/* tips */}
           <View style={[styles.card, styles.tipCard]}>
             <Text style={[styles.text, Styles.pushTop]}>
-              Tip: Practice mindful breathing to connect your mind to your body.
+              {tips[getRandomInt(0, tips.length)]}
             </Text>
           </View>
 
